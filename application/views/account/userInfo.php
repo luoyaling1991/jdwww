@@ -23,7 +23,7 @@
                         <div class="col-md-6">
                             <i class="fa fa-edit pointer" onclick="edit(this);">&nbsp;&nbsp;</i>
                             <input id="shop_name" class="hidden form-control edit" name="shop_name" value="<?php echo $user['shop_name']?>" placeholder="未设置企业全名"/>
-                            <label class="control-label" style="font-weight:normal;"><?php echo $user['shop_name'] ? $user['shop_name'] : '未设置企业全名'?></label>
+                            <label class="control-label" style="margin-bottom:18px;font-weight:normal;"><?php echo $user['shop_name'] ? $user['shop_name'] : '未设置企业全名'?></label>
                             <br/>
                             <span id="shop_name_1"></span>
                         </div>
@@ -43,10 +43,10 @@
                     </div>
                     <div class="form-group">
                         <label class="col-sm-1 control-label">企业简介</label>
-                        <div class="col-md-6" style="height:74px;">
+                        <div class="col-md-6">
                             <i class="fa fa-edit pointer" onclick="edit(this);">&nbsp;&nbsp;</i>
                             <textarea id="shop_desc" name="shop_desc" class="hidden form-control edit" autofocus rows="3" placeholder="未设置企业简介"><?php echo $user['shop_desc'] ?></textarea>
-                            <label class="control-label" style="font-weight:normal;text-align:justify;">
+                            <label class="control-label" style="margin-bottom:18px;font-weight:normal;text-align:justify;">
                                 <?php echo $user['shop_desc'] ? $user['shop_desc'] : '未设置企业简介'?>
                             </label>
                             <br/>
@@ -61,7 +61,7 @@
                         <div class="col-md-6">
                             <i class="fa fa-edit pointer" onclick="edit(this);">&nbsp;&nbsp;</i>
                             <input id="shop_person" name="shop_person" class="hidden form-control edit" type="text" value="<?php echo $user['shop_person']?>" placeholder="未设置联系人"/>
-                            <label class="control-label" style="font-weight:normal;"><?php echo $user['shop_person'] ? $user['shop_person'] : '未设置联系人' ?></label>
+                            <label class="control-label" style="margin-bottom:18px;font-weight:normal;"><?php echo $user['shop_person'] ? $user['shop_person'] : '未设置联系人' ?></label>
                             <br/>
                             <span id="shop_person_1"></span>
                         </div>
@@ -74,7 +74,7 @@
                         <div class="col-md-6">
                             <i class="fa fa-edit pointer" onclick="edit(this);">&nbsp;&nbsp;</i>
                             <input id="shop_phone" name="shop_phone" class="hidden form-control edit" type="text" value="<?php echo $user['shop_phone']?>" placeholder="未设置联系电话"/>
-                            <label class="control-label" style="font-weight:normal;"><?php echo $user['shop_phone'] ? $user['shop_phone'] : '未设置联系电话' ?></label>
+                            <label class="control-label" style="margin-bottom:18px;font-weight:normal;"><?php echo $user['shop_phone'] ? $user['shop_phone'] : '未设置联系电话' ?></label>
                             <br/>
                             <span id="shop_phone_1"></span>
                         </div>
@@ -112,7 +112,7 @@
                                     <?php }?>
                                 </select>
                             </section>
-                            <label class="control-label" style="font-weight:normal;"><?php echo $addr['p']?>&nbsp;<?php echo $addr['c']?>&nbsp;<?php echo $addr['a']?></label>
+                            <label class="control-label" style="margin-bottom:18px;font-weight:normal;"><?php echo $addr['p']?>&nbsp;<?php echo $addr['c']?>&nbsp;<?php echo $addr['a']?></label>
                             <br/>
                             <span id="area_id_1"></span>
                         </div>
@@ -122,7 +122,7 @@
                         <div class="col-md-6">
                             <i class="fa fa-edit pointer" onclick="edit(this);">&nbsp;&nbsp;</i>
                             <input id="shop_address" name="shop_address" class="hidden form-control edit" type="text" value="<?php echo $user['shop_address']?>" placeholder="未设置具体地址"/>
-                            <label class="control-label" style="font-weight:normal;"><?php echo $user['shop_address']?$user['shop_address']:'未设置具体地址' ?></label>
+                            <label class="control-label" style="margin-bottom:18px;font-weight:normal;"><?php echo $user['shop_address']?$user['shop_address']:'未设置具体地址' ?></label>
                             <br/>
                             <span id="area_id_2"></span>
                         </div>
