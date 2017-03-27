@@ -1,0 +1,120 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <title>'简点'&nbsp;|&nbsp;点餐</title>
+    <link rel="stylesheet" href="/data/css/jquery.fullPage.css">
+    <link rel="stylesheet" type="text/css" href="/data/css/index.css">
+</head>
+<body>
+<header>
+    <ul id="menu">
+        <li class="logo" style="margin-top:30px;"><img src="/data/images/logo.png"></li>
+        <li data-menuanchor="page1" class="active"><a href="#page1">首页</a></li>
+        <!--<li data-menuanchor="page2"><a href="#page2">产品介绍</a></li>-->
+        <li data-menuanchor="page2"><a href="#page2">关于我们</a></li>
+        <li class="tel" style="float:right;margin-right:100px;color:#de5042;font-size:26px;font-weight:bold;margin-top:36px;"><img src="/data/images/tel.png">&nbsp;&nbsp;000 666 888</li>
+    </ul>
+</header>
+<div id="dowebok">
+    <div class="section" style="background:url(/data/images/bg1.png) no-repeat;background-size:100% 100%;">
+        <h4>商&nbsp;家&nbsp;登&nbsp;录</h4>
+        <h6>MERCHANT LOGIN</h6>
+        <form action="/index.php/admin/admin_index/web_login" method="post">
+            <input type="text" name="username" value="" placeholder="企业注册码"><br>
+            <input type="password" name="password" value="" placeholder="请输入登录密码">
+            <div class="auto">
+                <input type="checkbox" class="check" name="" value="">
+                <p>自动登录（公共电脑勿勾选）</p>
+                <a href="/index.php/web/lose">忘记密码</a>
+            </div>
+            <input type="submit" class="in" value="立即登录">
+        </form>
+        <a class="log" href="/index.php/web/reg">免费注册</a>
+        <div class="code">
+            <img src="/data/images/code.png">
+            <p>客户端下载</p>
+        </div>
+    </div>
+    <!--<div class="section" style="background:url(/data/images/bg2.png) no-repeat;background-size:100% 100%;">
+        <h3>INTRODUCE</h3>
+        <h5>简点点餐&nbsp;&nbsp;&nbsp;&nbsp;简简单单</h5>
+        <div id="box">
+            <pre class="prev">prev</pre>
+            <pre class="next">next</pre>
+            <ul>
+                <li><img src="/data/images/pic5.png" style="opacity: 0.35;"><p style="opacity:0">体验：增强顾客消费体验，提升店铺形象，降低成本</p></li>
+                <li><img src="/data/images/pic4.png" style="opacity: 0.35;"><p style="opacity:0">便捷：获取方便，使用简单，随时随地查看、管理，提高工作效率</p></li>
+                <li><img src="/data/images/pic1.png" style="opacity: 1;"><p style="opacity:1">易用：成熟的使用方式，详尽的单品展示，精准的数据分析、图形展示</p></li>
+                <li><img src="/data/images/pic2.png" style="opacity: 0.35;"><p style="opacity:0">通用：无需专业设置和设备，兼容市场成熟的PAD，针对WIFI信号覆盖不好的离线模式</p></li>
+                <li><img src="/data/images/pic3.png" style="opacity: 0.35;"><p style="opacity:0">低成本：免费注册并试用3个月，最低只需一台电脑，一个平板、联网必要设备</p></li>
+            </ul>
+        </div>
+    </div>-->
+    <div class="section" style="background:url(/data/images/bg3.png) no-repeat;background-size:100% 100%;">
+        <h3>ABOUT US</h3>
+        <h5>关于我们</h5>
+        <ul class="icon">
+            <li onmouseover= "mOver(this)" onmouseout="mOut(this)">
+                <div class="circle"><img src="/data/images/icon-1.png"></div>
+                <h6>免费咨询</h6>
+                <p>提供7×24小时免费支持热线<br>
+                    400-888-8888</p>
+            </li>
+            <li onmouseover= "mOver(this)" onmouseout="mOut(this)">
+                <div class="circle"><img src="/data/images/icon-2.png"></div>
+                <h6>免费维护</h6>
+                <p>我们的系统采用云服务器部署</p>
+                <p>全天候7X24小时监控</p>
+            </li>
+            <li onmouseover= "mOver(this)" onmouseout="mOut(this)">
+                <div class="circle"><img src="/data/images/icon-3.png"></div>
+                <h6>远程诊断</h6>
+                <p>远程协助对出现的问题进行分析</p>
+                <p>也可直接即时对系统进行优化和完善</p>
+            </li>
+        </ul>
+        <div class="footer">
+            <div class="footer_code"></div>
+            <div class="footer_about">
+                <h6>成都创世天成科技有限公司</h6>
+                <p>地址：四川省成都市新乐中街278号1层&nbsp;&nbsp;&nbsp;&nbsp;邮编：610000</p>
+                <p>联系电话：18501376808（赵先生）</p>
+                <p>电子邮件：service@jdmenu.cn</p>
+                <p>蜀ICP备15026107号-1</p>
+            </div>
+            <div class="footer_icon"><img src="/data/images/jian.png"></div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="/data/javascript/jquery-1.8.3.min.js"></script>
+<script src="/data/javascript/jquery.fullPage.min.js"></script>
+<script src="/data/javascript/index.js"></script>
+<script type="text/javascript">
+    function mOver(obj)
+    {
+        var $_circle = $(obj).find(".circle");
+        var $_h6 = $(obj).find("h6");
+        var $_p = $(obj).find("p");
+        $_circle.css({"border-color": "#de5042","background-color": "#de5042"});
+        $_h6.css("color", "#de5042");
+        $_p.css("color", "#f7f7f7");
+    }
+    function mOut(obj)
+    {
+        var $_circle = $(obj).find(".circle");
+        var $_h6 = $(obj).find("h6");
+        var $_p = $(obj).find("p");
+        $_circle.css({"border-color": '#7e7e7e',"background-color": "rgba(1,1,1,0)"})
+        $_h6.css("color", "#cccaca");
+        $_p.css("color", "#7e7e7e");
+    }
+    $(function(){
+        $('#dowebok').fullpage({
+            anchors: ['page1', 'page2', 'page3'],
+            menu: '#menu'
+        });
+    });
+</script>
+</html>

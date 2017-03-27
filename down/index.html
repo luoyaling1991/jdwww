@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=gbk" />
+		<meta name="author" content="www.frebsite.nl" />
+		<meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=yes" />
+
+		<title>"简点"点餐PAD版APP下载</title>
+		<link href="img/favicon.ico" rel="shortcut icon" type="image/x-icon">
+
+		<link type="text/css" rel="stylesheet" href="css/flexslider.css" />
+		<link type="text/css" rel="stylesheet" href="css/jquery.mmenu.all.css" />
+		<link type="text/css" rel="stylesheet" href="css/style.css" />
+
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/jquery.mmenu.min.all.js"></script>
+		<script type="text/javascript" src="js/jquery.flexslider.js"></script>
+<style type="text/css">
+#divSCA img{
+margin-top:-270px
+}
+#divSCA 
+{ 
+z-index: 10001; 
+display: none; 
+} 
+.small_top{
+	color:#999;
+	font-size:14px;
+}
+.big_top{
+	color:#000;
+	font-size:18px;
+	font-family:Verdana, Geneva, sans-serif;
+}
+.bottom_class{
+	color:#000;
+	font-size:14px;
+	font-family:Verdana, Geneva, sans-serif;
+}
+.div_class{
+	background-color:#1fabfb;
+	height:50px;
+	margin:0;
+	padding:0;
+}
+</style>		
+<script type="text/javascript" src="js/o-script.js"></script>
+<script type="text/javascript" src="js/jquery.divbox.js"></script> 
+
+<script type="text/javascript">
+function on_load(){
+	var ua = navigator.userAgent.toLowerCase();
+    if (ua.match(/Android/i) == "android") {
+        $("#android").show();
+		$("#ios_img").hide();
+    } 
+	else if (ua.match(/iPhone\sOS/i) == "iphone os") {
+        $("#ios").show();
+		$("#android_img").hide();
+    } 
+	else {
+         $("#error").show();
+    }
+}
+function openDiv() { 
+$("#divSCA").OpenDiv(); 
+} 
+function isWeiXin(){ 
+	var ua = window.navigator.userAgent.toLowerCase(); 
+	if(ua.match(/MicroMessenger/i) == 'micromessenger'){ 
+		return true; 
+	}else{ 
+		return false; 
+	} 
+} 
+function check_weixin(){
+	if(isWeiXin()){ 
+		$("#divSCA").OpenDiv(); 
+	} else{
+		
+	}
+}
+</script>
+
+	</head>
+	<body class="o-page" onLoad="on_load()">
+    <div id="divSCA" > 
+   			<img src="img/bg_z.png" width="100%"  id="android_img"/>
+			<img src="img/bg_ios.png" width="100%"  id="ios_img" />
+    </div> 
+		<div id="page">
+			<!-- Header -->
+			
+			<div class="subHeader"><i class="i-home i-small"></i>欢迎下载!</div>
+			
+			<!-- Banner -->
+			<div class="bannerPane">
+			   <div style="margin-top:10px;margin-left:5%;">
+               		<img src="img/logo.png" width="20%"  style="float:left;"/>
+                    <div style="float:left;margin-left:10px;" align="left">
+                    	<span class="big_top">"简点"点餐PAD版</span><br>
+						<span class="small_top">版本:V1.0.0</span><br>
+						<span class="small_top">发布日期:2016年01月01日</span>
+                    </div>
+               </div>
+			</div>
+			<div class="bannerPane">
+				<div id="android" style="display:none;">
+					<a href="javascript:alert('暂未上线，敬请期待！');" onClick="check_weixin()"><img src="img/android.png" width="90%"  style="float:left;margin-left:5%;margin-top:10px;margin-bottom:10px;"/></a>
+				</div>
+				<div id="ios" style="display:none;">
+					<a href="javascript:alert('暂未上线，敬请期待！');" onClick="check_weixin()"><img src="img/ios.png" width="90%"  style="float:left;margin-left:5%;margin-top:10px;margin-bottom:10px;"/></a>
+				</div>
+				<div id="error" style="display:none;">
+					<a href="javascript:alert('暂未上线，敬请期待！');" onClick="check_weixin()"><img src="img/android.png" width="90%"  style="float:left;margin-left:5%;margin-top:10px;margin-bottom:10px;"/></a>
+					<a href="javascript:alert('暂未上线，敬请期待！');" onClick="check_weixin()"><img src="img/ios.png" width="90%"  style="float:left;margin-left:5%;margin-top:10px;margin-bottom:10px;"/></a>
+					
+				</div>	
+                <div>
+					<div style="float:left;font-size:16px;margin-left:5%;" align="left"><b>【客服电话：】</b>18501376808</div>
+				</div>				
+			</div>
+			<!-- End Banner -->
+			
+			
+		</div>
+		<div style="text-align:center;">
+			<p>版权所有：<a href="http://www.jdmenu.cn/" target="_blank">成都创世天成科技有限公司</a><br>
+			   网站备案/许可证号：蜀ICP备000000001号-1
+			</p>
+		</div>
+	</body>
+</html>
