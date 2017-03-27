@@ -88,10 +88,15 @@
                                         </th>
                                         <td >
                                         	<span class="text" style="padding-bottom:3px;display:block;">
-                                        	<?php if($user['shop_mobile']!=null){
+                                        	<?php
+											if($user['shop_mobile']!=null){
 												echo "".substr($user['shop_mobile'],0,3).'****'.substr($user['shop_mobile'],7,4);
 												$href2=site_url('admin/admin_user/shop_phone_1?type=1');$a="更换";
-            								 }else{echo "未绑定手机号";$href2=site_url('admin/admin_user/shop_phone');$a="绑定";}?>&nbsp;&nbsp;&nbsp;<a href='<?php echo $href2;?>' target='rightFrame'><?php echo $a?></a>                             
+            								 }else{
+												echo "未绑定手机号";$href2=site_url('admin/admin_user/shop_phone');
+												$a="绑定";
+											}
+											?>&nbsp;&nbsp;&nbsp;<a href='<?php echo $href2;?>' target='rightFrame'><?php echo $a?></a>
 			</span>
                                         </td>
                                     </tr>
@@ -101,7 +106,16 @@
                                         </th>
                                         <td >
                                         	<span class="text" style="padding-bottom:3px;display:block;">
-                                            	<font color="#FF9B4E" ><?php if(!$user['shop_email']){$href="/admin_email/set_email";echo "未绑定邮箱";}else{$href="/admin_email/upd_email_show?type=2";$mail=substr($user['shop_email'],0,3).'****'.substr($user['shop_email'], strrpos($_SESSION['admin_user']['shop_email'],'@')) ;echo $mail;}?></font>&nbsp;&nbsp;&nbsp;<a href="<?php echo site_url('admin').$href?>" target='rightFrame'><?php if(!$user['shop_email']){echo "绑定";}else{echo "更换";}?></a>
+                                            	<font color="#FF9B4E" >
+													<?php
+													if(!$user['shop_email']){$href="/admin_email/set_email";echo "未绑定邮箱";
+													}else{
+														$href="/admin_email/upd_email_show?type=2";
+														$mail=substr($user['shop_email'],0,3).'****'.substr($user['shop_email'],
+																strrpos($_SESSION['admin_user']['shop_email'],'@')) ;
+														echo $mail;}
+													?>
+												</font>&nbsp;&nbsp;&nbsp;<a href="<?php echo site_url('admin').$href?>" target='rightFrame'><?php if(!$user['shop_email']){echo "绑定";}else{echo "更换";}?></a>
                                             </span>
                                         
                                         </td>

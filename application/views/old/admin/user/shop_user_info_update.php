@@ -117,7 +117,7 @@
 										<label class="control-label"><span class="required">*&nbsp;</span>联系地址:</label>
 										<div class="controls">
 											<input type="text" class="span6 m-wrap" style="width:335px;" value="<?php echo $user['shop_address']?>" id="shop_address" name="shop_address"/>
-											<span class="help-inline" id="area_id_2">请输入联系地址.</span>
+											<span id="area_id_2"></span>
 										</div>
 									</div>
                                    <div class="controls">
@@ -132,8 +132,6 @@
 				</div>
 			</div>
     </div>
-	
-
 
 	<script src="<?php echo constant('ADMIN_SRC');?>media/js/jquery-1.10.1.min.js" type="text/javascript"></script>
 	<script src="<?php echo constant('ADMIN_SRC');?>media/js/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>

@@ -132,10 +132,11 @@
     $(function(){
         setContentUrl("<?php echo site_url('admin/admin_index/main_right')?>");
     })
-    function setContentUrl (_url) {
+    function setContentUrl (_url, _data) {
         $.ajax({
             type: 'POST',
             url: _url,
+            data: _data,
             success: function(data) {
                 // $.cookie('url', _url);
                 $("#page-wrapper").html(data);

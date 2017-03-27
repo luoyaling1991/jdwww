@@ -10,6 +10,14 @@ class admin_user extends MY_Controller{
 	}
 	public function user_info(){
 		$data=array();
+		//获取省市县三级数据
+		$data['province']=$this->admin_user_model->get_p();
+		$data['city']=$this->admin_user_model->get_c();
+		$data['area']=$this->admin_user_model->get_a();
+		$re=$this->admin_user_model->get_c_a();
+		$data['city_list']=$re['city_list'];
+		$data['area_list']=$re['area_list'];
+		unset($re);
 		$data['user']=$this->admin_user_model->user_info();
 		//获取店铺位置
 		$p=$_SESSION['admin_user']['shop_qx_1'];//省
@@ -47,19 +55,6 @@ class admin_user extends MY_Controller{
 		}else {
 			echo 'error';
 		}
-	}
-	public function shop_user_info_update(){
-		$data=array();
-		//获取省市县三级数据
-		$data['province']=$this->admin_user_model->get_p();
-		$data['city']=$this->admin_user_model->get_c();
-		$data['area']=$this->admin_user_model->get_a();
-		$re=$this->admin_user_model->get_c_a();
-		$data['city_list']=$re['city_list'];
-		$data['area_list']=$re['area_list'];
-		unset($re);
-		$data['user']=$_SESSION['admin_user'];
-		$this->load->view('admin/user/shop_user_info_update',$data);
 	}
 	public function update_user(){
 		$reg_num=$_SESSION['admin_user']['reg_num'];
