@@ -14,14 +14,14 @@
                         <div class="col-md-4">
                             <div class="radio i-checks radio-inline">
                                 <label>
-                                    <input class="authType" type="radio" value="01" name="authType" style="position: absolute; opacity: 0;" checked>
+                                    <input class="authType" type="radio" value="1" <?php if ($user['two'] == 1) echo "checked"; ?> name="two" style="position: absolute; opacity: 0;" checked>
                                     <ins class="iCheck-helper"></ins>
                                     <label>开启权限验证</label>
                                 </label>
                             </div>
                             <div class="radio i-checks radio-inline">
                                 <label>
-                                    <input class="authType" type="radio" value="02" name="authType" style="position: absolute; opacity: 0;">
+                                    <input class="authType" type="radio" value="0" <?php if ($user['two'] == 0) echo "checked"; ?>  name="two" style="position: absolute; opacity: 0;">
                                     <ins class="iCheck-helper"></ins>
                                     <label>关闭权限验证</label>
                                 </label>
@@ -33,7 +33,7 @@
                     </div>
                     <div class="form-group">
                         <div class="col-md-4">
-                            <button class="btn btn-w-m btn-primary" type="submit">完&nbsp;&nbsp;成</button>
+                            <button class="btn btn-w-m btn-primary" type="button" onclick="change_two()">完&nbsp;&nbsp;成</button>
                         </div>
                     </div>
                 </form>
@@ -41,3 +41,19 @@
         </div>
     </div>
 </div>
+
+<script type="application/javascript">
+    function change_two() {
+        var two = $('input[name="two"]:checked').val();
+        console.log(two);
+        $.post('<?php echo site_url('admin/admin_two/upd_two')?>', {two: two}, function (e) {
+            if (e == -1) {
+                alert('修改失败，请重试!');
+            } else {
+                top.location = "<?php echo site_url('admin/admin_index/system')?>";
+            }
+        });
+
+        
+    }
+</script>

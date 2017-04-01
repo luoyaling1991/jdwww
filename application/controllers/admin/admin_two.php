@@ -26,7 +26,7 @@ class Admin_two extends CI_Controller {
 	}
 	public function show_two_1(){
 		$data['time']=time();
-		$this->load->view('admin/two/two_1',$data);
+		$this->load->view('auth/login_auth',$data);
 	}
 	public function login_two(){
 		$time=$_POST['time'];
@@ -34,9 +34,12 @@ class Admin_two extends CI_Controller {
 			$_SESSION['admin_user']['is_check']=1;
 			redirect('admin/admin_index/system');
 		}else{
-			echo "<script>alert('二次验证密码错误，请重试!');</script>";
+//			echo "<script>alert('二次验证密码错误，请重试!');</script>";
 			$data['time']=time();
-			$this->load->view('admin/two/two',$data);
+//            redirect('admin/admin_index/system');
+			$this->load->view('auth/login_auth',$data);
+//			$this->load->view(site_url('admin/admin_index/system'),$data);
+            echo "<script>alert('二次验证密码错误，请重试!');</script>";
 		}
 	}
 	public function login_two_1(){

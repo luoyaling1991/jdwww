@@ -255,7 +255,8 @@ public function send_email($data,$subject,$body){//data收件人地址，subject
 		$re=$this->admin_user_model->update($table_name,$data,$where);
 		if($re){
 			$this->admin_user_model->update_token($this->md5_pwd($_POST['pad_pwd']),$_SESSION['admin_user']['shop_id']);
-			echo "<script>alert('更新成功');location.href='user_info';</script>";
+//			echo "<script>alert('更新成功');location.href = setContentUrl('http://www.zyf.com/index.php/admin/admin_user/user_info')</script>";
+            $this->load->view('platform/index',$data);
 		}else{
 			echo "<script>alert('更新失败,请重试');history.go(-1);</script>";
 		}
