@@ -249,10 +249,14 @@
         }
         var type_identity = '<?php echo $_SESSION['type_identity'] ?>';
         //验证成功，跳转修改密码页面
-        if(type_identity == 'authority_pwd'){
+        if(type_identity == 'authority_pwd'){//修改权限密码
             window.top.href = setContentUrl('<?php echo site_url("admin/admin_yz/upd_pwd_show") ?>');
-        }else {
+        }else if(type_identity == 'login_pwd') {//修改登录密码
             window.top.href = setContentUrl('<?php echo site_url("admin/admin_pwd/upd_pwd_show") ?>');
+        }else if(type_identity == 'authority_mobile'){
+            window.top.href = setContentUrl('<?php echo site_url("admin/admin_phone/show_phone_view") ?>');
+        }else if(type_identity == 'authority_email'){
+            window.top.href = setContentUrl('<?php echo site_url("admin/admin_email/show_email_view") ?>');
         }
         
     }

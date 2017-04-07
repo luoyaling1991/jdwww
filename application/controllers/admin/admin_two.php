@@ -37,8 +37,10 @@ class Admin_two extends CI_Controller {
 //			echo "<script>alert('二次验证密码错误，请重试!');</script>";
 			$data['time']=time();
 //            redirect('admin/admin_index/system');
-			$this->load->view('auth/login_auth',$data);
+//			$this->load->view('auth/login_auth',$data);
 //			$this->load->view(site_url('admin/admin_index/system'),$data);
+            $this->load->view('platform/index',$data);
+            //TODO 二次密码验证失败后暂时直接进入平台首页,待解决密码错误从输
             echo "<script>alert('二次验证密码错误，请重试!');</script>";
 		}
 	}

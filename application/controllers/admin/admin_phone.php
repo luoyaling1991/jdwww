@@ -10,9 +10,21 @@ class admin_phone extends MY_Controller{
 	}
 	//更换绑定手机
 	public function index(){
+        $_SESSION['type_identity'] = 'authority_mobile';
 		$data['user']=$this->admin_user_model->user_info();
-		$this->load->view('auth/security/bind/mobile',$data);
+//		$this->load->view('auth/security/bind/mobile',$data);
+		$this->load->view('auth/security/identity_auth',$data);
 	}
+    
+    /**
+     *
+     * 显示更改手机号码的视图
+     */
+	public function show_phone_view(){
+        $data['user']=$this->admin_user_model->user_info();
+		$this->load->view('auth/security/bind/mobile',$data);
+    }
+	
 	//确认后填写新号码
 	public function upd_phone_show(){
 		$data['user']=$this->admin_user_model->user_info();
@@ -23,10 +35,12 @@ class admin_phone extends MY_Controller{
 		$data=array("shop_mobile"=>$_POST['shop_mobile']);
 		$condition="shop_id = ".$_SESSION['admin_user']['shop_id'];
 		$bl=$this->admin_user_model->upd_phone($data,$condition);
-		if($bl){
-			redirect('admin/admin_user/user_info');
+		if(!$bl){
+//			redirect('admin/admin_user/user_info');
+			echo site_url("admin/admin_user/user_info");
 		}else{
-			echo "<script>alert('操作执行失败，请重试!');history.go(-1);</script>";
+//			echo "<script>alert('操作执行失败，请重试!');history.go(-1);</script>";
+    		echo "-1";
 		}
 		
 	}

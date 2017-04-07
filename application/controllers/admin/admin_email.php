@@ -24,9 +24,20 @@ class admin_email extends MY_Controller{
 	}
 	//更换绑定手机
 	public function upd_email_show(){
+        $_SESSION['type_identity'] = 'authority_email';
 		$data['user']=$this->admin_user_model->user_info();
-		$this->load->view('auth/security/bind/email',$data);
+//		$this->load->view('auth/security/bind/email',$data);
+        $this->load->view('auth/security/identity_auth',$data);
 	}
+    
+    /**
+     * 显示更新密码的view
+     */
+	public function show_email_view(){
+        $data['user']=$this->admin_user_model->user_info();
+		$this->load->view('auth/security/bind/email',$data);
+    }
+	
 	//确认后填写新号码
 	public function upd_email_show_1(){
 		$data['user']=$this->admin_user_model->user_info();
@@ -38,9 +49,11 @@ class admin_email extends MY_Controller{
 		$condition="shop_id = ".$_SESSION['admin_user']['shop_id'];
 		$bl=$this->admin_user_model->upd_phone($data,$condition);
 		if($bl){
-			redirect('admin/admin_user/user_info');
+//			redirect('admin/admin_user/user_info');
+			echo site_url('admin/admin_user/user_info');
 		}else{
-			echo "<script>alert('操作执行失败，请重试!');history.go(-1);</script>";
+//			echo "<script>alert('操作执行失败，请重试!');history.go(-1);</script>";
+			echo "-1";
 		}
 		
 	}
