@@ -26,10 +26,13 @@ h6{
 }
 input{
 	line-height:30px;
+	height:30px;
 	width: 20%;
 	background: rgba(0,0,0,0.2);
 	border:1px solid rgba(255,255,255,0.2);
 	border-radius: 4px;
+	-webkit-border-redius: 4px;
+	-moz-border-radius: 4px;
 	color: #fff;
 	margin: 10px auto;
 	padding: 0 10px 0;

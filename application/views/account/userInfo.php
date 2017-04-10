@@ -147,7 +147,7 @@
                                         echo site_url('admin/admin_phone/index');}
                                     else{
                                         echo site_url('admin/admin_two/show_two_1');
-                                    }?>')"><?php echo $a?></a></span></label>
+                                    }?>', false)"><?php echo $a?></a></span></label>
                         </div>
                         <div class="col-md-4">
                             <label class="control-label text-muted" style="font-weight:normal;color: #e84e40;">用于密码修改，接收验证码等重要信息</label>
@@ -174,7 +174,7 @@
                                         echo site_url('admin/admin_email/check_email');}
                                     else{
                                         echo site_url('admin/admin_two/show_two_1');
-                                    }?>')"><?php echo $mailText?></a></span></label>
+                                    }?>', false)"><?php echo $mailText?></a></span></label>
                         </div>
                         <div class="col-md-4">
                             <label class="control-label text-muted" style="font-weight:normal;color: #e84e40;">用于密码修改，接收验证码等重要信息</label>
@@ -204,7 +204,6 @@
             if (isEdit == 1){
                 $("#options").removeClass('hidden');
             }
-            console.log(isEdit);
         }
     }
     var city_list=<?php echo $city_list?>;
@@ -243,7 +242,6 @@
     // 提交form数据
     function updateAction() {
         var isValid = check_submit();
-        console.log(isValid);
         if (isValid != false) {
             setContentUrl('<?php echo site_url('admin/admin_user/update_user')?>', $('#form').serialize());
         }

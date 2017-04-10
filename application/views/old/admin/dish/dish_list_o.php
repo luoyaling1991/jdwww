@@ -48,8 +48,8 @@
                 <div class="portlet box myself">
                     <div class="portlet-title">
                         <div class="caption">&nbsp;&nbsp;&nbsp;菜品管理</div>
-                        <input type="hidden" name="sousuo_1" id="sousuo_1" value="<?php echo "&where_arr=$where_arr&type_id=$type_id"?>">
-                        <input type="hidden" name="sousuo_2" id="sousuo_2" value="<?php echo "&where_arr=$where_arr&type_id=$type_id&asc_name=$asc_name&asc_type=$asc_type"?>">
+                        <input type="hidden" name="sousuo_1" id="sousuo_1" value="{<?php echo "where_arr:$where_arr,type_id:$type_id"?>}">
+                        <input type="hidden" name="sousuo_2" id="sousuo_2" value="{<?php echo "where_arr:$where_arr,type_id:$type_id,asc_name:$asc_name,asc_type:$asc_type"?>}">
                     </div>
                     <div class="portlet-body" style="padding:8px 25px 8px 25px;">
                         <form action="<?php echo site_url("admin/admin_dish/dish_batch")?>" id="batch_form" method="post">

@@ -9,9 +9,8 @@ class System_dish_model extends MY_Model {
 	/*查询菜品
 	 *$where_arr查询条件 $asc_name排序列名  $asc_type排序类型 (asc/desc) $page页码值 
 	 * */
-	function dish_list($where_arr,$type_id,$asc_name,$asc_type,$page){
+	function dish_list($where_arr,$type_id,$asc_name,$asc_type,$page,$size){
 		$page--;
-		$size =15;//每页显示数据
 		$page_sum= $size*$page;
 
 		if($type_id!="" && $type_id!=-1){
@@ -46,7 +45,7 @@ class System_dish_model extends MY_Model {
         	$num++;
         }
        	$type_list=$this->get_dish_type();
-		return array("where_arr"=>$where_arr,"type_id"=>$type_id,"asc_name"=>$asc_name,"asc_type"=>$asc_type,"page"=>$page,"totalPage"=>$totalPage,"dish_list"=>$dish_list,"type_list"=>$type_list['type_list']);
+		return array("where_arr"=>$where_arr,"type_id"=>$type_id,"asc_name"=>$asc_name,"asc_type"=>$asc_type,"page"=>$page,"totalPage"=>$totalPage,"count"=>$count,"page_sum"=>$page_sum,"size"=>$size,"dish_list"=>$dish_list,"type_list"=>$type_list['type_list']);
 	}
 	//查找单个菜品信息
 	function get_dish($dish_id){

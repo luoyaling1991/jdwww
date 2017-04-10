@@ -3,7 +3,6 @@
         <ul class="nav">
             <li>
                 <a href="javascript:void(0);" onclick="setContentUrl('<?php echo site_url('admin/admin_user/user_info')?>')"><i class="fa fa-th-large"></i> <span class="nav-label">账户信息</span></a>
-                <!--<ul class="nav-second-level"></ul>-->
             </li>
             <li>
                 <a><i class="fa fa-table"></i> <span class="nav-label">日程管理</span> <span class="fa arrow"></span></a>
@@ -84,7 +83,7 @@
         </ul>
     </div>
 </nav>
-<div class="logo" style="text-align:center;position: absolute;bottom:20px;left:16px;">
+<div class="logo" style="text-align:center;position: absolute;bottom:0;left:8px;">
     <div>
         <img src="/data/images/logo2.png">
     </div>

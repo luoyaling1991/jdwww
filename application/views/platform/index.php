@@ -50,26 +50,7 @@
             width: 100px;
             text-align: right;
         }
-        @media ( min-width : 768px) {
-            #page-wrapper {
-                min-height: 1000px;
-            }
-        }
-        @media ( min-width:1366px) {
-            #page-wrapper{
-                min-height: 760px;
-            }
-        }
-        @media (min-width: 1400px) {
-            #page-wrapper{
-                min-height: 900px;
-            }
-        }
-        @media (min-width: 1920px) {
-            #page-wrapper{
-                min-height:1060px;
-            }
-        }
+
         .pointer {
             cursor:pointer;
         }
@@ -129,9 +110,6 @@
 <script src="/data/javascript/plugins/morris/morris.js"></script>
 <script src="/data/javascript/plugins/layer/laydate/laydate.js"></script>
 <script type="text/javascript">
-    $(function(){
-        setContentUrl("<?php echo site_url('admin/admin_index/main_right')?>");
-    })
     function setContentUrl (_url, _data) {
         $.ajax({
             type: 'POST',
@@ -140,6 +118,7 @@
             success: function(data) {
                 // $.cookie('url', _url);
                 $("#page-wrapper").html(data);
+                setScrollTop();
                 $(document).ready(function(){
                     $('.i-checks').iCheck({
                         checkboxClass: 'icheckbox_square-green',
@@ -150,7 +129,13 @@
             }
         });
     }
+    //回到顶部
+    function setScrollTop(){
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+    }
     $(function() {
+        setContentUrl("<?php echo site_url('admin/admin_index/main_right')?>");
         var $sec_ul = $('#sidebar ul.nav-second-level');
         var $sec_li = $sec_ul.find("li");
         $sec_ul.prev().click(function () {

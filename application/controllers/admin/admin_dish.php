@@ -22,8 +22,14 @@ class Admin_dish extends MY_Controller {
 		}
 		
 		$sys_type=&$_POST['sys_type'];//菜品属性
-		if($sys_type==""){$sys_type==0;}
-		if($sys_type==1){
+		if($sys_type==""){
+			$sys_type==0;
+		} else {
+			$sys_types = implode(',',$sys_type);
+			$where_arr.=" and a.sys_type in ({$sys_types})";
+		}
+
+		/*if($sys_type==1){
 			$where_arr.=" and a.sys_type={$sys_type}";
 			$sys_type_1=&$_POST['sys_type_1'];//菜品属性1
 			$sys_type_2=&$_POST['sys_type_2'];//菜品属性2
@@ -35,7 +41,7 @@ class Admin_dish extends MY_Controller {
 			}
 		}else if($sys_type!=0 && $sys_type!=1){
 			$where_arr.=" and a.sys_type={$sys_type}";
-		}
+		}*/
 		
 		$dish_state=&$_POST['state'];//菜品状态
 		if($dish_state!="" && $dish_state!=-1){
@@ -44,19 +50,22 @@ class Admin_dish extends MY_Controller {
 		
 		$asc_name="insert_time";
 		$asc_type="desc";
-		$page=1;
-		$data=$this->system_dish_model->dish_list($where_arr,$type_id,$asc_name,$asc_type,$page);
+		$page=isset($_POST['page']) || empty($_POST['page']) || $_POST['page'] == 0 ? 1 : $_POST['page'];
+		$size = isset($_POST['size']) || empty($_POST['size']) || $_POST['size'] == 0 ? 10 :$_POST['size'];
+		$data=$this->system_dish_model->dish_list($where_arr,$type_id,$asc_name,$asc_type,$page,$size);
 		$this->load->view('base/dishes/list',$data);
 	}
 	public function dish_list_do(){
-		$where_arr=$_GET['where_arr'];
+		$where_arr=$_POST['where_arr'];
+		echo $where_arr;
 		$sys_where="";
 		//获取搜索条件
-		$type_id=&$_GET['type_id'];//菜品分类
-		$asc_name=&$_GET['asc_name'];
-		$asc_type=&$_GET['asc_type'];
-		$page=&$_GET['page'];
-		$data=$this->system_dish_model->dish_list($where_arr,$type_id,$asc_name,$asc_type,$page);
+		$type_id=&$_POST['type_id'];//菜品分类
+		$asc_name=&$_POST['asc_name'];
+		$asc_type=&$_POST['asc_type'];
+		$page=&$_POST['page'];
+		$size = isset($_POST['size']) || empty($_POST['size']) || $_POST['size'] == 0 ? 10 :$_POST['size'];
+		$data=$this->system_dish_model->dish_list($where_arr,$type_id,$asc_name,$asc_type,$page,$size);
 		$this->load->view('base/dishes/list',$data);
 	}
 	//校验菜品名称
