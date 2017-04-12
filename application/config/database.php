@@ -5,7 +5,7 @@ $active_record = TRUE;
 
 $db['cook']['hostname'] = 'localhost';
 $db['cook']['username'] = 'root';
-$db['cook']['password'] = 'root';
+$db['cook']['password'] = '123456';
 $db['cook']['database'] = 'jd';
 $db['cook']['dbdriver'] = 'mysql';
 $db['cook']['dbprefix'] = '';

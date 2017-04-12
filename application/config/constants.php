@@ -10,7 +10,7 @@ define('SYS_NAME','"简点"点餐');//系统名称
 define('COPYRIGHT','2015-2016 © “成都创世天成科技有限公司”');//版权所属
 define('GG',"欢迎使用'简点•点餐'系统，联系电话18501376808！");//广告语
 
-define('BASE_URL','http://jdmenu.com/');//项目路径
+define('BASE_URL','http://www.zyf.com/');//项目路径
 define('ADMIN_SRC',constant("BASE_URL")."/data/");//后台引用js/css/img路径
 
 define('FILE_READ_MODE', 0644);
