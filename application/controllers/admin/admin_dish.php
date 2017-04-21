@@ -25,8 +25,8 @@ class Admin_dish extends MY_Controller {
 		if($sys_type==""){
 			$sys_type==0;
 		} else {
-			$sys_types = implode(',',$sys_type);
-			$where_arr.=" and a.sys_type in ({$sys_types})";
+			// $sys_types = implode(',',$sys_type);
+			$where_arr.=" and a.sys_type = {$sys_type}";
 		}
 
 		/*if($sys_type==1){
@@ -57,7 +57,6 @@ class Admin_dish extends MY_Controller {
 	}
 	public function dish_list_do(){
 		$where_arr=$_POST['where_arr'];
-		echo $where_arr;
 		$sys_where="";
 		//获取搜索条件
 		$type_id=&$_POST['type_id'];//菜品分类
@@ -128,6 +127,9 @@ class Admin_dish extends MY_Controller {
 	public function dish_update_show(){
 		$dish_id=$_GET['dish_id'];
 		$data=$this->system_dish_model->get_dish($dish_id);
+		$images = array();
+		array_push($images,$data['dish']['dish_img_1'],$data['dish']['dish_img_2'],$data['dish']['dish_img_3'],$data['dish']['dish_img_4'],$data['dish']['dish_img_5']);
+		$data['dish']['images'] = $images;
 		$this->load->view('base/dishes/addOrEdit',$data);
 	}
 	public function dish_update(){
@@ -156,27 +158,40 @@ class Admin_dish extends MY_Controller {
 		$this->dish_list();
 	}
     function add_img(){
-		$extend = explode(".",$_FILES["file1"]["name"]);
+		/*$extend = explode(".",$_FILES["file1"]["name"]);
 		$key= count($extend)-1;
-		$ext= $extend[$key];
-		if ($ext=="jpg" || $ext=="png" || $ext="gif"){
-			$newfile = time().".".$ext;
-			$filePath="data/upload/";
-			
-			if (!file_exists($filePath)){//如果指定文件夹不存在，则创建文件夹
-				mkdir($filePath, 0777, true);
-			}
-			$name=$filePath.$newfile;
-			if(move_uploaded_file($_FILES['file1']['tmp_name'],$name))
-			{
-				$is_success=1;
-				$reason=$name;
-			}
-			@unlink($_FILES['file1']);
-			echo $name;
-		}else {
-			echo 'error';
+		$ext= $extend[$key];*/
+		/*if ($ext=="jpg" || $ext=="png" || $ext="gif"){*/
+		$data = array();
+		$filePath="data/upload/";
+
+		if (!file_exists($filePath)){//如果指定文件夹不存在，则创建文件夹
+			mkdir($filePath, 0777, true);
 		}
+
+		/*if(move_uploaded_file($_FILES['file1']['tmp_name'],$name))
+		{
+			$is_success=1;
+			$reason=$name;
+		}*/
+		$image_data = $_POST['data'];
+		$index = 0;
+		foreach ($image_data as $image) {
+			$newfile = microtime().".jpg";
+			$name=$filePath.$newfile;
+			if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $image['src'], $result)){
+				$type = $result[2];
+				if (file_put_contents($name, base64_decode(str_replace($result[1], '', $image['src'])))){
+					$data[$index]['sort'] = $image['sort'];
+					$data[$index]['src'] = $name;
+					$index++;
+				}
+			}
+		}
+		echo $data=$this->JSON($data);
+		/*}else {
+			echo 'error';
+		}*/
 	}
 	function add_img_2(){
 		$extend = explode(".",$_FILES["file2"]["name"]);

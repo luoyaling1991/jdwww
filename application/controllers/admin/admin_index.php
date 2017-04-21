@@ -57,14 +57,14 @@ class Admin_index extends CI_Controller {
 				$this->load->view('admin/bar/index',$data);
 			}
 		}else{
-			redirect('account/login');
+			redirect('admin/admin_login/index');
 		}
 	}
     public function system(){
     	if(isset($_SESSION['admin_user'])){
     		$this->load->view('platform/index');
     	}else{
-    		redirect('account/login');
+    		redirect('admin/admin_login/index');
     	}
     }
 	public function main_top(){

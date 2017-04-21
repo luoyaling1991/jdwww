@@ -2869,7 +2869,7 @@ a.forum-item-title:hover {
 }
 body {
   font-family: "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  background-color: #2f4050;
+  background-color: #f3f3f4;
   font-size: 13px;
   color: #676a6c;
   overflow-x: hidden;
@@ -3014,6 +3014,7 @@ video {
 #page-wrapper {
   padding: 0 15px;
   min-height: 574px;
+  height:100%;
   position: relative !important;
 }
 @media (min-width: 768px) {

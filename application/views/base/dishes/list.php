@@ -19,37 +19,37 @@
                     </div>
                     <div class="i-checks checkbox-inline">
                         <label class="">
-                            <input type="checkbox" name="sys_type[]" value="1" style="position: absolute; opacity: 0;">
+                            <input type="checkbox" name="sys_type[]" value="-1" style="position: absolute; opacity: 0;">
                             <label style="margin-left:5px;font-weight:normal;">套餐</label>
                         </label>
                     </div>
                     <div class="i-checks checkbox-inline">
                         <label class="">
-                            <input type="checkbox" name="sys_type[]" value="2" style="position: absolute; opacity: 0;">
+                            <input type="checkbox" name="sys_type[]" value="1" style="position: absolute; opacity: 0;">
                             <label style="margin-left:5px;font-weight:normal;">菜品</label>
                         </label>
                     </div>
                     <div class="i-checks checkbox-inline">
                         <label class="">
-                            <input type="checkbox" name="sys_type[]" value="3" style="position: absolute; opacity: 0;">
+                            <input type="checkbox" name="sys_type[]" value="2" style="position: absolute; opacity: 0;">
                             <label style="margin-left:5px;font-weight:normal;">汤类</label>
                         </label>
                     </div>
                     <div class="i-checks checkbox-inline">
                         <label class="">
-                            <input type="checkbox" name="sys_type[]" value="4" style="position: absolute; opacity: 0;">
+                            <input type="checkbox" name="sys_type[]" value="3" style="position: absolute; opacity: 0;">
                             <label style="margin-left:5px;font-weight:normal;">小吃</label>
                         </label>
                     </div>
                     <div class="i-checks checkbox-inline">
                         <label class="">
-                            <input type="checkbox" name="sys_type[]" value="5" style="position: absolute; opacity: 0;">
+                            <input type="checkbox" name="sys_type[]" value="4" style="position: absolute; opacity: 0;">
                             <label style="margin-left:5px;font-weight:normal;">酒水</label>
                         </label>
                     </div>
                     <div class="i-checks checkbox-inline">
                         <label class="">
-                            <input type="checkbox" name="sys_type[]" value="6" style="position: absolute; opacity: 0;">
+                            <input type="checkbox" name="sys_type[]" value="5" style="position: absolute; opacity: 0;">
                             <label style="margin-left:5px;font-weight:normal;">其他</label>
                         </label>
                     </div>
@@ -74,12 +74,12 @@
     <div class="float-e-margins m-t">
         <div class="ibox-title">
             <ul class="nav nav-pills">
-                <li style="margin-top: 8px;margin-left: 12px;margin-right: 20px;"><input type="checkbox" class="i-checks" name="input[]">&nbsp;&nbsp;全选</li>
-                <li style="margin-right: 10px;"><button class="btn btn-white" type="button">上架</button>
+                <li style="margin-top: 8px;margin-left: 12px;margin-right: 20px;"><input id="check_all" type="checkbox" class="i-checks">&nbsp;&nbsp;全选</li>
+                <li style="margin-right: 10px;"><button class="btn btn-white" type="button" onclick="batch_do(1);">上架</button>
                 </li>
-                <li style="margin-right: 10px;"><button class="btn btn-white" type="button">下架</button>
+                <li style="margin-right: 10px;"><button class="btn btn-white" type="button" onclick="batch_do(0);">下架</button>
                 </li>
-                <li style="margin-right: 10px;"><button class="btn btn-white" type="button">批量删除</button>
+                <li style="margin-right: 10px;"><button class="btn btn-white" type="button" onclick="batch_do(-1);">批量删除</button>
                 </li>
             </ul>
         </div>
@@ -89,10 +89,6 @@
                     <thead>
                     <tr>
                         <th>
-                            <div class="icheckbox_square-green" style="position: relative;">
-                                <input type="checkbox" class="i-checks" name="input[]" style="position: absolute; opacity: 0;">
-
-                            </div>
                         </th>
                         <th>ID</th>
                         <th>菜名</th>
@@ -120,20 +116,18 @@
                     $dish_price = $row['dish_price'];
                     $dish_count = $row['dish_count'];
                     $dish_state = $row['dish_state'];
-                    $show_state = "<span color='red'>未上架</span>";
+                    $show_state = "<span style='color:red;'>未上架</span>";
                     if ($dish_state == 1) {
-                        $show_state = "<span color='#5BB04B'>已上架</span>";
+                        $show_state = "<span style='color:#5BB04B'>已上架</span>";
                     }
                     $insert_time = $row['insert_time'];
-                    $upd_a = site_url("admin/admin_dish/dish_update_show?dish_id=") . $dish_id;
-                    $del_a = site_url("admin/admin_dish/dish_delete?dish_id=") . $dish_id;
                     echo "
                     <tr>
                         <td>
-                            <input type='checkbox' class='i-checks' name='input[]' style='position: absolute; opacity: 0;'>
+                            <input type='checkbox' class='i-checks' name='input' value='${dish_id}' style='position: absolute; opacity: 0;'>
                         </td>
                         <td>{$id}</td>
-                        <td><i class='fa fa-edit'></i>&nbsp;&nbsp;{$dish_name}</td>
+                        <td><i class='fa fa-edit pointer' onclick='editDish(this);'>&nbsp;&nbsp;</i><input name='dish_name' class='hidden edit' type='text' value='{$dish_name}'/><label>{$dish_name}</label></td>
                         <td>
                             <i class='fa fa-edit'></i>&nbsp;&nbsp;$dish_price
                         </td>
@@ -143,7 +137,7 @@
                             $show_state
                         </td>
                         <td>$insert_time</td>
-                        <td><a href='#'>编辑</a>｜<a href='#'>删除</a></td>
+                        <td><a href='javascript:void(0);' onclick='edit($dish_id)'>编辑</a>｜<a href='javascript:void(0);' onclick='del($dish_id)'>删除</a></td>
                     </tr>";
                     }
                     if($num==0){
@@ -200,8 +194,18 @@
             $("#editable_previous").removeClass("disabled");
         }
     })
+    function editDish (obj){
+        if($(obj).next().hasClass("hidden")){
+            $(obj).hide();
+            $(obj).next().removeClass("hidden").addClass("show").focus().val($(obj).next().val());
+            $(obj).next().next().hide();
+            isEdit++;
+            if (isEdit == 1){
+                $("#options").removeClass('hidden');
+            }
+        }
+    }
     function search(){
-        console.log($('#form').serialize());
         setContentUrl("<?php echo site_url('admin/admin_dish/dish_list');?>",$("#form").serialize());
     }
     function flip_do(page_no){
@@ -231,4 +235,56 @@
         }
         setContentUrl("<?php echo site_url('admin/admin_dish/dish_list_do');?>",queryData);
     }
+    $('#check_all').on('ifChecked ifUnchecked', function(event) {
+        if (event.type == 'ifChecked') {
+            $("input[name='input']").iCheck('check');
+        } else {
+            $("input[name='input']").iCheck('uncheck');
+        }
+    })
+    dashArr = [];
+    $("input[name='input']").on('ifChanged', function (event) {
+        if ($(this).is(':checked')) {
+            dashArr.push(this.value);
+        } else {
+            var index = dashArr.lastIndexOf(this.value);
+            dashArr.splice(index,1);
+        }
+
+    })
+    function batch_do (value) {
+        if (dashArr.length <= 0) {
+            if(value==1){
+                alert('请选择要上架的菜品');
+            } else if (value==0){
+                alert('请选择要下架的菜品');
+            }else if (value==-1){
+                alert('请选择要删除的菜品');
+            }
+        } else {
+            if(value==-1) {
+                if(!confirm("确定要执行批量删除吗？")){
+                    return false;
+                }
+            }
+            var queryData = {
+                dish_id: dashArr,
+                batch_value:value
+            }
+            setContentUrl("<?php echo site_url('admin/admin_dish/dish_batch');?>",queryData);
+        }
+    }
+    function edit(dish_id){
+        var url = '<?php echo site_url("admin/admin_dish/dish_update_show?dish_id=") ?>'+dish_id;
+        setContentUrl(url);
+    }
+    function del(dish_id){
+        if(confirm("确定要删除改菜品吗？")){
+            var url = '<?php echo site_url("admin/admin_dish/dish_delete?dish_id=")?>'+dish_id;
+            setContentUrl(url);
+        } else {
+            return false;
+        }
+    }
+
 </script>

@@ -13,6 +13,7 @@
     <link href="/data/css/style.css?v=2.2.0" rel="stylesheet">
     <link href="/data/css/default.css" rel="stylesheet">
     <link href="/data/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link  href="/data/css/plugins/cropper/cropper.css" rel="stylesheet">
     <style type="text/css">
         .nav > li.active{
             border: none;
@@ -67,7 +68,7 @@
     </style>
 </head>
 <body>
-<div id="wrapper" style="background: #3f3f3f;position: relative;">
+<div id="wrapper" style="background: #3f3f3f;">
     <?php
     include_once "top.php";
     include_once "left.php";
@@ -109,6 +110,7 @@
 <script src="/data/javascript/plugins/morris/raphael-2.1.0.min.js"></script>
 <script src="/data/javascript/plugins/morris/morris.js"></script>
 <script src="/data/javascript/plugins/layer/laydate/laydate.js"></script>
+<script src="/data/javascript/plugins/cropper/cropper.js"></script>
 <script type="text/javascript">
     function setContentUrl (_url, _data) {
         $.ajax({

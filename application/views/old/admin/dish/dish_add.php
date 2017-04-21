@@ -330,19 +330,19 @@
                                                 <tr>
                                                 	<td colspan="5">
                                                     	<div class="div_class_img_big">
-                                                                    	<a href="<?php echo constant('ADMIN_SRC');?>media/upload/img1.jpg" target="_blank">
-                                                                        	<img src="<?php echo constant('ADMIN_SRC');?>media/upload/dish_3.png" style="width:300px;height:100px;" 
-                                                                        		class="tooltips" id="img_6"
-                                                                            	 />
-                                                                            	 <input type="hidden" id="value_6" name="value_6">
-                                                                         </a>
-                                                                         <div class="div_class_img_small_a">
-                                                                                <a href="javascript:remove_img('6');" >
-                                                                                	<img src="<?php echo constant('ADMIN_SRC');?>media/img/red_x.png" 
-                                                                                    style="float:right;margin-right:10px;margin-top:5px;"/>
-                                                                                </a>
-                                                                         </div>
-                                                                    </div>
+															<a href="<?php echo constant('ADMIN_SRC');?>media/upload/img1.jpg" target="_blank">
+																<img src="<?php echo constant('ADMIN_SRC');?>media/upload/dish_3.png" style="width:300px;height:100px;"
+																	class="tooltips" id="img_6"
+																	 />
+																	 <input type="hidden" id="value_6" name="value_6">
+															 </a>
+															 <div class="div_class_img_small_a">
+																	<a href="javascript:remove_img('6');" >
+																		<img src="<?php echo constant('ADMIN_SRC');?>media/img/red_x.png"
+																		style="float:right;margin-right:10px;margin-top:5px;"/>
+																	</a>
+															 </div>
+														</div>
                                                     </td>
                                                 </tr>
                                                 </tbody>
