@@ -10,6 +10,7 @@ class admin_pwd extends MY_Controller{
 	}
 	//验证
 	public function index(){
+        $_SESSION['type_identity'] = 'login_pwd';
 		$data['user']=$this->admin_user_model->user_info();
 		$this->load->view('auth/security/identity_auth',$data);
 	}

@@ -10,8 +10,9 @@ class admin_yz extends MY_Controller{
 	}
 	//验证
 	public function index(){
+        $_SESSION['type_identity'] = 'authority_pwd';
 		$data['user']=$this->admin_user_model->user_info();
-		$this->load->view('admin/yz/admin_check',$data);
+		$this->load->view('auth/security/identity_auth',$data);
 	}
 	//更换绑定手机
 	public function upd_pwd_show(){

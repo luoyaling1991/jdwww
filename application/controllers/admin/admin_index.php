@@ -54,7 +54,7 @@ class Admin_index extends CI_Controller {
 				$order_no_list=$this->JSON($data_list['order_no_list']);
 				$data['type_list']=$type_list;
 				$data['order_no_list']=$order_no_list;
-				$this->load->view('admin/bar/index',$data);
+				$this->load->view('old/admin/bar/index',$data);
 			}
 		}else{
 			redirect('admin/admin_login/index');
