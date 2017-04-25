@@ -21,18 +21,20 @@
                     <div class="form-group">
                         <label class="col-sm-1 control-label">名称设置</label>
                         <div class="col-md-6">
-                            <input class="form-control" name="dish_name" id="dish_name" type="text" value="<?php echo $dish['dish_name'];?>" onchange="name_check('<?php echo $dish['dish_id'];?>');" onkeyup="getEnableTextNum(this, 6);" />
+                            <input class="form-control" name="dish_name" id="dish_name" type="text" value="<?php if(isset($dish)) { echo $dish['dish_name'];}?>" onchange="name_check('<?php if(isset($dish)) {echo $dish['dish_id'];} ?>');" onkeyup="getEnableTextNum(this, 6);" />
                             <span id="dish_name_1"></span>
-                            <input type="hidden" name="dish_id" id="dish_id" value="<?php echo $dish['dish_id'];?>">
+                            <input type="hidden" name="dish_id" id="dish_id" value="<?php if(isset($dish)) { echo $dish['dish_id'];}?>">
                         </div>
                         <label class="control-label" style="font-weight:normal;">还能输入<span class="text-danger" id="name_num"><?php
-                                echo 6 -utf8_strlen($dish['dish_name']) < 0 ? 0 : 6 -utf8_strlen($dish['dish_name'])
+                                if(isset($dish)) { echo 6 -utf8_strlen($dish['dish_name']) < 0 ? 0 : 6 -utf8_strlen($dish['dish_name']);}else {
+                                    echo 6;
+                                }
                                 ?></span>个字</label>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-1 control-label">设置价格</label>
                         <div class="col-md-2">
-                            <input class="form-control" type="number" name="dish_price" id="dish_price" value="<?php echo $dish['dish_price'];?>"/>
+                            <input class="form-control" type="number" name="dish_price" id="dish_price" value="<?php if (isset($dish)) {echo $dish['dish_price'];}?>"/>
                             <span id="dish_price_1"></span>
                         </div>
                         <label class="control-label" style="font-weight:normal;">&nbsp;元</label>
@@ -40,10 +42,12 @@
                     <div class="form-group">
                         <label class="col-sm-1 control-label">新品介绍</label>
                         <div class="col-md-6">
-                            <textarea class="form-control" name="dish_desc" id="dish_desc"><?php echo $dish['dish_desc'];?></textarea>
+                            <textarea class="form-control" name="dish_desc" id="dish_desc"><?php if (isset($dish)) {echo $dish['dish_desc'];}?></textarea>
                             <span id="dish_desc_1"></span>
                         </div>
-                        <label class="control-label" style="font-weight:normal;">&nbsp;还能输入<span class="text-danger"><?php echo 100 -utf8_strlen($dish['dish_desc']) < 0 ? 0 : 100 -utf8_strlen($dish['dish_desc'])?></span>个字</label>
+                        <label class="control-label" style="font-weight:normal;">&nbsp;还能输入<span class="text-danger"><?php if (isset($dish)) {echo 100 -utf8_strlen($dish['dish_desc']) < 0 ? 0 : 100 -utf8_strlen($dish['dish_desc']);}else{
+                                    echo 100;
+                                }?></span>个字</label>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-1 control-label">新品属性</label>
@@ -52,19 +56,19 @@
                                 <input type="radio" value="1" name="sys_type" <?php if(!isset($dish['sys_type'])){echo "checked";}else if($dish['sys_type']==1){echo "checked";};?>>&nbsp;&nbsp;菜品
                             </div>
                             <div class="checkbox i-checks checkbox-inline" style="margin-right:20px;">
-                                <input type="radio" value="2" name="sys_type" <?php if($dish['sys_type']==2){echo "checked";};?>>
+                                <input type="radio" value="2" name="sys_type" <?php if(isset($dish['sys_type']) && $dish['sys_type']==2){echo "checked";};?>>
                                 &nbsp;&nbsp;汤类
                             </div>
                             <div class="checkbox i-checks checkbox-inline" style="margin-right:20px;">
-                                <input type="radio" value="3" name="sys_type" <?php if($dish['sys_type']==3){echo "checked";};?>>
+                                <input type="radio" value="3" name="sys_type" <?php if(isset($dish['sys_type']) && $dish['sys_type']==3){echo "checked";};?>>
                                 &nbsp;&nbsp;小吃
                             </div>
                             <div class="checkbox i-checks checkbox-inline" style="margin-right:20px;">
-                                <input type="radio" value="4" name="sys_type" <?php if($dish['sys_type']==4){echo "checked";};?>>
+                                <input type="radio" value="4" name="sys_type" <?php if(isset($dish['sys_type']) && $dish['sys_type']==4){echo "checked";};?>>
                                 &nbsp;&nbsp;酒水
                             </div>
                             <div class="checkbox i-checks checkbox-inline" style="margin-right:20px;">
-                                <input type="radio" value="5" name="sys_type" <?php if($dish['sys_type']==5){echo "checked";};?>>
+                                <input type="radio" value="5" name="sys_type" <?php if(isset($dish['sys_type']) && $dish['sys_type']==5){echo "checked";};?>>
                                 &nbsp;&nbsp;其他
                             </div>
                         </div>
@@ -72,26 +76,28 @@
                     </div>
                     <div class="form-group">
                         <label class="col-sm-1 control-label">菜品分类</label>
-                        <div class="col-md-8">
+                        <div class="col-md-8" id="dish_types">
                             <?php
                             $num=0;
-                            foreach ($type_list as $row){
-                                $num++;
-                                $type_id=$row['type_id'];
-                                $type_name=$row['type_name'];
-                                if (in_array($type_id, $type_id_list)) {
-                                    echo "<div class='checkbox i-checks checkbox-inline' style='margin-right:20px;'>
+                            if (isset($type_list)){
+                                foreach ($type_list as $row){
+                                    $num++;
+                                    $type_id=$row['type_id'];
+                                    $type_name=$row['type_name'];
+                                    if (isset($type_id_list) && in_array($type_id, $type_id_list)) {
+                                        echo "<div class='checkbox i-checks checkbox-inline' style='margin-right:20px;'>
                                     <input type='checkbox' value='{$type_id}' name='dish_type[]' checked>
                                     &nbsp;&nbsp;{$type_name}
                                     </div>";
-                                }else{
-                                    echo "<div class='checkbox i-checks checkbox-inline' style='margin-right:20px;'>
+                                    }else{
+                                        echo "<div class='checkbox i-checks checkbox-inline' style='margin-right:20px;'>
                                     <input type='checkbox' value='{$type_id}' name='dish_type[]'>
                                     &nbsp;&nbsp;{$type_name}
                                     </div>";
-                                }
-                                if($num%8==0){
-                                    echo "<br>";
+                                    }
+                                    if($num%7==0){
+                                        echo "<br>";
+                                    }
                                 }
                             }
                             if($num==0){
@@ -100,7 +106,7 @@
                             ?>
                             <span id="dish_type_1"></span>
                         </div>
-                        <label class="control-label" style="font-weight:normal;"><a href="#"><i class="fa fa-plus">添加分类</i></a></label>
+                        <label class="control-label" style="font-weight:normal;" data-toggle='modal' data-target='#addType'><a href="javascript:void(0);"  ><i class="fa fa-plus">添加分类</i></a></label>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-1 control-label">上传图片</label>
@@ -119,10 +125,11 @@
                                 <div id="dish_images">
                                     <?php
                                     $num=0;
-                                    foreach ($dish['images'] as $value){
-                                        if ($value) {
-                                            $url = '/'.$value;
-                                            echo "<div class='dish' name='img_$num' style='width:136px;height:100px;float:left;margin:0 15px 15px 0;'><img class='dish_img' src='$url' width='136' height='100' style='cursor:pointer;border:2px solid rgb(175,175,180);' data-toggle='modal' data-target='#editImage' onclick='edit_img(this);'/><div class='div_class_img_small_a'>
+                                    if (isset($dish)) {
+                                        foreach ($dish['images'] as $value){
+                                            if ($value) {
+                                                $url = '/'.$value;
+                                                echo "<div class='dish' name='img_$num' style='width:136px;height:100px;float:left;margin:0 15px 15px 0;'><img class='dish_img' src='$url' width='136' height='100' style='cursor:pointer;border:2px solid rgb(175,175,180);' data-toggle='modal' data-target='#editImage' onclick='edit_img(this);'/><div class='div_class_img_small_a'>
                                                <p style='width:13px;'><a name='next' href='javascript:l_remove($num);'>
                                                <img src='/data/media/img/z.png' style='margin-bottom:5px;'>
                                                 </a></p>
@@ -134,7 +141,8 @@
                                                 <img src='/data/media/img/red_x.png' style='margin-right:0;margin-bottom:4px;'>
                                                 </a></p>
                                                 </div></div>";
-                                            $num++;
+                                                $num++;
+                                            }
                                         }
                                     }
                                     ?>
@@ -145,7 +153,7 @@
                                 </div>
                                 <div id="recommen_images" style="display: none;">
                                     <?php
-                                        if ($dish['dish_img_6']) {
+                                        if (isset($dish['dish_img_6']) && $dish['dish_img_6']) {
                                             $sort = '0.1';
                                             $url = '/'.$dish['dish_img_6'];
                                             echo "<div class='recommend' name='img_{$sort}' style='width:300px;height:100px;float:left;margin:0 15px 15px 0;'><img id='value_6' src='{$url}' width='300' height='100' style='cursor:pointer;border:2px solid rgb(175,175,180);' data-toggle='modal' data-target='#editImage' onclick='edit_img(this);'/><div class='div_class_img_small_a'>
@@ -188,14 +196,14 @@
                         <div class="col-md-6">
                             <div class="radio i-checks radio-inline" style="margin-right:20px;">
 
-                                <input type="radio" name="dish_state" value="1" <?php if($dish['dish_state']==1){echo "checked";}?>>
+                                <input type="radio" name="dish_state" value="1" <?php if (!isset($dish['dish_state'])){echo "checked";}else if($dish['dish_state']==1){echo "checked";}?>>
 
                                 &nbsp;&nbsp;立即上架
 
                             </div>
                             <div class="radio i-checks radio-inline" style="margin-right:20px;">
 
-                                <input type="radio" name="dish_state" value="0" <?php if($dish['dish_state']==0){echo "checked";}?>>
+                                <input type="radio" name="dish_state" value="0" <?php if(isset($dish['dish_state']) && $dish['dish_state']==0){echo "checked";}?>>
 
                                 &nbsp;&nbsp;暂不上架
 
@@ -213,7 +221,7 @@
         </div>
     </div>
 </div>
-<!--弹出框-->
+<!--编辑图片弹出框-->
 <div class="modal inmodal fade" id="editImage" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content animated fadeIn">
@@ -233,6 +241,32 @@
                 </ul>
             </div>
             <div class="modal-footer" style="border:0;">
+            </div>
+        </div>
+    </div>
+</div>
+<!--添加分类弹出框-->
+<div class="modal inmodal in" id="addType" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content animated fadeIn">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title text-danger">添加分类&nbsp;&nbsp;<span style="color: #a0a0a0;font-size: 20px;font-weight: normal;">Add Type</span></h4>
+            </div>
+            <div class="modal-body">
+                <form method="post" class="form-horizontal" id="typeForm">
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">分类名称</label>
+                        <div class="col-md-8">
+                            <input class="form-control" id="type_name" name="type_name" type="text" value="" placeholder="四个字以内"/>
+                        </div>
+                        <span id="dish_type_1"></span>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="saveAddType();" data-dismiss="modal">保存</button>
+                <button type="button" class="btn btn-white" data-dismiss="modal">取消</button>
             </div>
         </div>
     </div>
@@ -320,7 +354,7 @@
                         var reader = new FileReader();
                         reader.readAsDataURL(file);
                         reader.onload = function(e){
-                            sort += <?php echo count($dish['images']) ?>;
+                            sort += <?php if (isset($dish['images'])){echo count($dish['images']);}else {echo 0;}  ?>;
                             var that = this;
                             $('#addContainer').before("<div class='dish' name='img_"+sort+"' style='width:136px;height:100px;float:left;margin:0 15px 15px 0;'><img class='dish_img' src='"+that.result+"' width='136' height='100' style='cursor:pointer;border:2px solid rgb(175,175,180);' data-toggle='modal' data-target='#editImage' onclick='edit_img(this);'/><div class='div_class_img_small_a'>"
                             +"<p style='width:13px;'><a name='next' href='javascript:l_remove("+sort+");'>"
@@ -659,7 +693,12 @@
                     }
                     // 新增修改记录
                     var formData = $('#form').serialize();
-                    setContentUrl('<?php echo site_url("admin/admin_dish/dish_update");?>', formData);
+                    var dish_id = "<?php if (isset($dish)){echo $dish['dish_id'];}?>";
+                    if (dish_id) {
+                        setContentUrl('<?php echo site_url("admin/admin_dish/dish_update");?>', formData);
+                    }else {
+                        setContentUrl('<?php echo site_url("admin/admin_dish/dish_add");?>', formData);
+                    }
                 },
                 error: function (returndata) {
                 }
@@ -671,7 +710,31 @@
                 $("input[type='hidden'][name='value_"+sort+"']").val(value['src']);
             })
             var formData = $('#form').serialize();
-            setContentUrl('<?php echo site_url("admin/admin_dish/dish_update");?>', formData);
+            var dish_id = "<?php if (isset($dish)){echo $dish['dish_id'];}?>";
+            if (dish_id) {
+                setContentUrl('<?php echo site_url("admin/admin_dish/dish_update");?>', formData);
+            }else {
+                setContentUrl('<?php echo site_url("admin/admin_dish/dish_add");?>', formData);
+            }
+        }
+    }
+    function saveAddType() {
+        var e = event || window.event;
+        var target = e.target || e.srcElement;
+        var name = $('#type_name').val();
+        if (name!=null && name!="" && name.length<5){
+            $.post('<?php echo site_url('admin/admin_dish/dish_type_add')?>',{type_name:name},function (data){
+                $(target).attr('data-dismiss', 'modal');
+                data=JSON.parse(data);
+                $("#dish_types").append("<div class='checkbox i-checks checkbox-inline' style='margin-right:20px;'><div class='icheckbox_square-green' style='position: relative;'><input type='checkbox' value='"+data.type_id+"' name='dish_type[]' checked style='position: absolute; opacity: 0;'><ins class='iCheck-helper' style='position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;'></ins></div>&nbsp;&nbsp;"+data.type_name+"</div>");
+                var num = $("#dish_types .i-checks").length;
+                if(num%7==0){
+                    $("#dish_types").append("<br>");
+                }
+            });
+        }else{
+            $("#dish_type_1").html("菜品分类名称只能4个字以内，且不能为空.");
+            $("#dish_type_1").css("color","red");
         }
     }
 </script>

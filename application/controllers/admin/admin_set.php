@@ -87,7 +87,7 @@ class Admin_set extends MY_Controller {
 	public function set_update_show(){
 		$set_id=$_GET['set_id'];
 		$data=$this->system_set_model->get_set($set_id);
-		$this->load->view('admin/set/set_dish_upd',$data);
+		$this->load->view('base/dishes/addOrEditPackage',$data);
 	}
 	public function set_update(){
 		$bl=$this->system_set_model->set_upd();
@@ -100,14 +100,14 @@ class Admin_set extends MY_Controller {
 				echo "<script>alert('操作执行失败，请重试!');</script>";
 				$set_id=$_POST['set_id'];
 				$data=$this->system_set_model->get_set($set_id);
-				$this->load->view('admin/set/set_dish_upd',$data);
+				$this->load->view('base/dishes/addOrEditPackage',$data);
 			}
 		}
 	}
 	//添加套餐
 	public function set_add_show(){
 		$data=$this->system_set_model->get_dish_list();
-		$this->load->view('admin/set/set_dish_add',$data);
+		$this->load->view('base/dishes/addOrEditPackage',$data);
 	}
 	public function set_add(){
 		$bl=$this->system_set_model->set_add();

@@ -148,8 +148,8 @@
                 </table>
             </div>
             <div class="col-sm-6" style="font-size: 14px;font-weight: 400;">
-                <span><a href="release_dishes.html"><i class="fa fa-plus-square"></i>&nbsp;发布新品</a></span>
-				<span class="col-sm-offset-1"><a href="release_package.html"><i class="fa fa-plus-square"></i>&nbsp;发布套餐</a>
+                <span><a href="javascript:add();"><i class="fa fa-plus-square"></i>&nbsp;发布新品</a></span>
+				<span class="col-sm-offset-1"><a href="javascript:addPackage();"><i class="fa fa-plus-square"></i>&nbsp;发布套餐</a>
 				</span>
             </div>
         </div>
@@ -276,6 +276,14 @@
     }
     function edit(dish_id){
         var url = '<?php echo site_url("admin/admin_dish/dish_update_show?dish_id=") ?>'+dish_id;
+        setContentUrl(url);
+    }
+    function add(){
+        var url = '<?php echo site_url("admin/admin_dish/dish_add_show") ?>';
+        setContentUrl(url);
+    }
+    function addPackage() {
+        var url = '<?php echo site_url("admin/admin_set/set_add_show") ?>';
         setContentUrl(url);
     }
     function del(dish_id){

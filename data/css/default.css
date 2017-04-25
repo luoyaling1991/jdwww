@@ -1,6 +1,6 @@
 .table-menu{
 	height:160px;
-	width:340px;
+	width:300px;
 	float:left;
 	border-radius:80px;
 	box-shadow:3px 3px 10px #bcbdc0;
@@ -9,6 +9,9 @@
 	background:-moz-linear-gradient(#ffffff,#c5c5c6);
 	background:linear-gradient(#ffffff,#c5c5c6);
 	margin: 20px 20px;
+}
+.table-menu .table-text{
+	text-align: center;
 }
 .table-menu .table-on,.table-menu .table-off{
 	height:140px;
@@ -26,16 +29,14 @@
 	line-height:120px;
 }
 .table-menu h3{
-	margin-left:240px;
 	margin-top:50px;
 	font-size:30px;
 	font-weight:normal;
 }
 .table-menu h4{
 	color:#e65445;
-	margin-left: 230px;
 	margin-top:20px;
-	font-size:22px;
+	font-size:16px;
 	font-weight:normal;
 	cursor:pointer;
 }
@@ -57,7 +58,7 @@
 	background-color: #91d08f;
 }
 .max_a{
-	background-image:url(../images/sort_3.png);
+	background-image:url(/data/images/sort_3.png);
 	width:11px;
 	height:12px;
 	margin-right:5px;
@@ -71,10 +72,10 @@
 .max_a:focus, .max_a:hover,.max_a:active {
 	text-decoration:none;
 	border:none;
-	background-image:url(../images/sort_3_1.png);
+	background-image:url(/data/images/sort_3_1.png);
 }
 .shang_a{
-	background-image:url(../images/sort_1.png);
+	background-image:url(/data/images/sort_1.png);
 	width:11px;
 	height:12px;
 	margin-right:5px;
@@ -88,10 +89,10 @@
 .shang_a:focus, .shang_a:hover,.shang_a:active {
 	text-decoration:none;
 	border:none;
-	background-image:url(../images/sort_1_1.png);
+	background-image:url(/data/images/sort_1_1.png);
 }
 .xia_a{
-	background-image:url(../images/sort_2.png);
+	background-image:url(/data/images/sort_2.png);
 	width:11px;
 	height:12px;
 	margin-right:5px;
@@ -105,10 +106,10 @@
 .xia_a:focus, .xia_a:hover,.xia_a:active {
 	text-decoration:none;
 	border:none;
-	background-image:url(../images/sort_2_1.png);
+	background-image:url(/data/images/sort_2_1.png);
 }
 .min_a{
-	background-image:url(../images/sort_4.png);
+	background-image:url(/data/images/sort_4.png);
 	width:11px;
 	height:12px;
 	margin-right:5px;
@@ -122,7 +123,7 @@
 .min_a:focus, .min_a:hover,.min_a:active {
 	text-decoration:none;
 	border:none;
-	background-image:url(../images/sort_4_1.png);
+	background-image:url(/data/images/sort_4_1.png);
 }
 
 #myModal5 .modal-body .do-time{

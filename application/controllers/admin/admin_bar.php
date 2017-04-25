@@ -14,14 +14,16 @@ class Admin_bar extends MY_Controller {
 		if($data_one['one']['yz_03']==1 || $data_one['one']['yz_04']==1 ){
 			echo "<script>alert('暂无餐桌信息，无法进入吧台管理!');</script>";
 			$this->load->view('platform/index');
+			//redirect('admin/admin_index/system');
 		}else{
 			//获取基本信息
-			$data_list=$this->admin_bar_model->get_bar();
-			$type_list=$this->JSON($data_list['type_list']);
+			$data=$this->admin_bar_model->get_bar();
+			/*$type_list=$this->JSON($data_list['type_list']);
 			$order_no_list=$this->JSON($data_list['order_no_list']);
 			$data['type_list']=$type_list;
-			$data['order_no_list']=$order_no_list;
-			$this->load->view('old/admin/bar/index',$data);
+			$data['order_no_list']=$order_no_list;*/
+			//echo $data = $this->JSON($data);
+			$this->load->view('bar/index',$data);
 		}
 		
 	}

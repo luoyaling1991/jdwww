@@ -224,13 +224,13 @@ class System_dish_model extends MY_Model {
 			$this->type_asc=$min_asc-1;
 		}
 		$bl=$this->db->insert('shop_dish_type', $this);
-		/**if($bl){
+		if($bl){
 			$res = $this->db->select('type_id,type_name')->where(array('insert_time'=>$this->insert_time,'type_name'=>$this->type_name))->get('shop_dish_type');
 			$one= $res->row_array();
 		}else{
 			$one=array('type_id'=>'','type_name'=>'');
-		}**/
-		return $bl;
+		}
+		return $one;
 	}
 	
 }

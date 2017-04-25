@@ -118,9 +118,9 @@ class Admin_dish extends MY_Controller {
 	}
 	//新建分类信息
 	public function dish_type_add(){
-		$this->system_dish_model->dish_type_add();
-		$data=$this->system_dish_model->get_dish_type();
-		$data=$this->JSON($data['type_list']);
+		$data = $this->system_dish_model->dish_type_add();
+		/*$data=$this->system_dish_model->get_dish_type();*/
+		$data=$this->JSON($data);
 		echo $data;
 	}
 	//编辑菜品
