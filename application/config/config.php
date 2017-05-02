@@ -14,7 +14,7 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://www.zyf.com/';
+$config['base_url']	= 'http://jdmenu.com/';
 /*
 |--------------------------------------------------------------------------
 | Index File
