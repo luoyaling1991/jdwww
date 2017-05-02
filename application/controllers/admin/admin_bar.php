@@ -17,12 +17,11 @@ class Admin_bar extends MY_Controller {
 			//redirect('admin/admin_index/system');
 		}else{
 			//获取基本信息
-			$data=$this->admin_bar_model->get_bar();
-			/*$type_list=$this->JSON($data_list['type_list']);
+			$data_list=$this->admin_bar_model->get_bar();
+			$type_list=$this->JSON($data_list['type_list']);
 			$order_no_list=$this->JSON($data_list['order_no_list']);
 			$data['type_list']=$type_list;
-			$data['order_no_list']=$order_no_list;*/
-			//echo $data = $this->JSON($data);
+			$data['order_no_list']=$order_no_list;
 			$this->load->view('bar/index',$data);
 		}
 		
@@ -65,6 +64,8 @@ class Admin_bar extends MY_Controller {
 		$data=$this->admin_bar_model->get_bar();
 		$data=$this->JSON($data);
 		echo $data;
+		//$this->load->view('bar/index',$data);
+
 	}
 	public function order_do_1(){
 		$type=1;
@@ -79,8 +80,9 @@ class Admin_bar extends MY_Controller {
 	public function ajax(){
 		//获取基本信息
 		$data=$this->admin_bar_model->get_bar();
-		$data=$this->JSON($data);
-		echo $data;
+		/*$data=$this->JSON($data);
+		echo $data;*/
+		$this->load->view('bar/index',$data);
 	}
 	
 }

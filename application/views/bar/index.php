@@ -134,28 +134,6 @@
     <nav class="navbar-default navbar-static-side" role="navigation">
         <div class="sidebar-collapse">
             <ul class="nav" id="side-menu">
-                <?php
-                    $num = 0;
-                    foreach ($type_list as $row) {
-                        $type_id=$row['type_id'];//分类id
-                        $type_name=$row['type_name'];//分类名称
-                        $tab_list=$row['tab_list'];//餐桌集合
-                        if ($num == 0) {
-                            echo " <li class='active'>
-                            <a href='javascript:void(0);' id='first_tab' onclick='show_tables($type_id,this);'><span class='nav-label'>$type_name</span></a>
-                            </li>";
-                        }else {
-                            echo " <li >
-                            <a href='javascript:void(0);' onclick='show_tables($type_id,this);'><span class='nav-label'>$type_name</span></a>
-                            </li>";
-                        }
-                        $num++;
-                    }
-                    if ($num == 0) {
-                        echo "<li class='active' ><a href='javascript:show_tab_div(1);'>无餐桌分类</a>
-				        </li>";
-                    }
-                ?>
             </ul>
         </div>
     </nav>
@@ -168,182 +146,17 @@
             Copyright&copy; 2015 Systems Incorporated.</p>
     </div>
     <div id="page-wrapper" class="gray-bg dashbard-1">
-
-
         <div class="wrapper-content  animated fadeInRight">
             <!--餐桌列表-->
-            <div class="table" style="width: 68%;float: left;">
-                <?php
-                    foreach($type_list as $type) {
-                        $tab_list = $type['tab_list'];
-                        $type_id = $type['type_id'];
-                        if ($tab_list){
-                            foreach($tab_list as $row){
-                                $tab_id = $row['tab_id'];
-                                $tab_name = $row['tab_name'];
-                                $tab_person = $row['tab_person'];
-                                $tab_state = $row['tab_state'];
-                                $order_list = $row['order_list'];
-                                $state_text = '空闲中';
-                                $order_person=0;
-                                if($tab_state==2){
-                                    $order_title = "";
-                                    $log_text = "";
-                                    $order_count = 0;
-                                    $order_money = 0;
-                                    $sub_order_title = "";
-                                    $sub_log_text = "";
-                                    foreach ($order_list as $order) {
-                                        $order_id = $order['order_id'];
-                                        $order_type = $order['order_type'];
-                                        $order_no = $order['order_no'];
-                                        $order_waiter = $order['waiter_id'];
-                                        $insert_time = $order['insert_time'];
-                                        $log_list = $order['log_list'];
-                                        if ($order_type == 0) {
-                                            $order_title = "<h4 class='text-danger' style='font-size: 20px;text-align: left;'>$order_no<span style='font-size: 16px;'>&nbsp;&nbsp;{$insert_time}（{$tab_name}）</span></h4>";
-                                            $log_num = 0;
-                                            foreach($log_list as $log) {
-                                                $log_num++;
-                                                $log_num_show="";
-                                                if($log_num<10){
-                                                    $log_num_show="00".$log_num;
-                                                }else if($log_num<100 && $log_num>9){
-                                                    $log_num_show="0".$log_num;
-                                                }else{
-                                                    $log_num_show=$log_num;
-                                                }
-                                                $log_name = $log['log_name'];
-                                                $log_price = $log['log_price'];
-                                                $log_count = $log['log_count'];
-                                                $log_money = $log['log_money'];
-                                                $order_count = $order_count + $log_count;
-                                                $order_money = $order_money + $log_money;
-                                                $log_text .= "<tr>
-                                                            <td>$log_num_show</td>
-                                                            <td>$log_name</td>
-                                                            <td>$log_price</td>
-                                                            <td>$log_count</td>
-                                                            <td>$log_money</td>
-                                                            <td><a href=''>删除</a></td>
-                                                        </tr>";
-                                            }
-                                        } else {
-                                            $sub_order_title = "<tr style='background:#91d08f;'>
-                                                                <td class='text-danger'>$order_no</td>
-                                                                <td></td>
-                                                                <td></td>
-                                                                <td></td>
-                                                                <td></td>
-                                                                <td></td>
-                                                            </tr>";
-                                            $sub_log_num = 0;
-                                            foreach($log_list as $log) {
-                                                $sub_log_num++;
-                                                $sub_log_num_show = "";
-                                                if ($sub_log_num < 10) {
-                                                    $sub_log_num_show = "00" . $sub_log_num;
-                                                } else if ($sub_log_num < 100 && $sub_log_num > 9) {
-                                                    $sub_log_num_show = "0" . $sub_log_num;
-                                                } else {
-                                                    $sub_log_num_show = $sub_log_num;
-                                                }
-                                                $log_name = $log['log_name'];
-                                                $log_price = $log['log_price'];
-                                                $log_count = $log['log_count'];
-                                                $log_money = $log['log_money'];
-                                                $order_count = $order_count + $log_count;
-                                                $order_money = $order_money + $log_money;
-                                                $sub_log_text .= "<tr>
-                                                            <td>$sub_log_num_show</td>
-                                                            <td>$log_name</td>
-                                                            <td>$log_price</td>
-                                                            <td>$log_count</td>
-                                                            <td>$log_money</td>
-                                                            <td><a href=''>删除</a></td>
-                                                        </tr>";
-                                            }
+            <div class="table" style="width: 66%;float: left;" id="tables">
 
-                                        }
-
-                                    }
-                                    $order_person=$order_list[0]['order_person'];
-                                    $state_text = '查看订单';
-                                    echo "<div class='table-menu' name='show_tab_{$type_id}'>
-                                    <div class='table-on'>
-                                        <h1>$tab_name</h1>
-                                    </div>
-                                    <div class='table-text'>
-                                        <h3><span style='color:#e65445;'>$order_person</span>/$tab_person</h3>
-                                        <h4 data-toggle='modal' data-target='#$tab_id'>$state_text
-                                        </h4>
-                                    </div>
-                                    <div class='modal inmodal' id='$tab_id' tabindex='-1' role='dialog'  aria-hidden='true'>
-                                        <div class='modal-dialog'>
-                                            <div class='modal-content animated fadeIn'>
-                                                <div class='modal-header waiting' style='padding: 15px;''>
-                                                    <button type='button' class='close' data-dismiss='modal'><span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button>
-                                                    {$order_title}
-                                                </div>
-                                                <div class='modal-body'>
-                                                    <div class='ibox-content'>
-                                                        <table class='table table-striped'>
-                                                            <thead>
-                                                            <tr>
-                                                                <th>ID</th>
-                                                                <th>菜品</th>
-                                                                <th>单价</th>
-                                                                <th>数量</th>
-                                                                <th>总价</th>
-                                                                <th>删除</th>
-                                                            </tr>
-                                                            </thead>
-                                                            {$log_text}
-                                                            {$sub_order_title}
-                                                            {$sub_log_text}
-                                                            <tr class='waiting'>
-                                                                <th>共计</th>
-                                                                <th></th>
-                                                                <th></th>
-                                                                <th>{$order_count}份</th>
-                                                                <th>{$order_money}元</th>
-                                                                <th></th>
-                                                            </tr>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                                <div class='modal-footer'>
-                                                    <button type='button' class='btn btn-primary'>确认打印</button>
-                                                    <button type='button' class='btn btn-white' data-dismiss='modal'>关闭</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>";
-                                } else {
-                                    echo "<div class='table-menu' name='show_tab_{$type_id}'>
-                                    <div class='table-on'>
-                                        <h1>$tab_name</h1>
-                                    </div>
-                                    <div class='table-text'>
-                                        <h3><span style='color:#e65445;'>$order_person</span>/$tab_person</h3>
-                                        <h4 style='color:#676a6c;cursor:default;'>$state_text</h4>
-                                    </div>
-                                </div>";
-                                }
-                            }
-                        }
-                    }
-
-                ?>
             </div>
-            <aside style="width:30%;float:right;">
+            <aside style="width:34%;float:right;">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title waiting">
-                        <h5>待确定订单<span class="text-danger">（3）</span></h5>
+                        <h5>待确定订单<span class="text-danger">（<?php echo count($order_no_list) ?>）</span></h5>
                     </div>
                     <div class="ibox-content">
-
                         <table class="table table-hover">
                             <thead>
                             <tr>
@@ -352,161 +165,18 @@
                                 <th>时间</th>
                             </tr>
                             </thead>
-                            <tbody>
-                            <tr>
-                                <td data-toggle="modal" data-target="#myModal4" style="cursor:pointer;">1
-                                    <div class="modal inmodal" id="myModal4" tabindex="-1" role="dialog"  aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content animated fadeIn">
-                                                <div class="modal-header waiting" style="padding: 15px;">
-                                                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                                                    <h4 class="text-danger" style="font-size: 20px;text-align: left;">201633214111212<span style="font-size: 16px;">&nbsp;&nbsp;&nbsp;&nbsp;22:22:22（满汉全席6人）</span></h4>
+                            <tbody id="no_deal_list">
 
-                                                </div>
-                                                <div class="modal-body">
-                                                    <div class="ibox-content">
-
-                                                        <table class="table table-striped">
-                                                            <thead>
-                                                            <tr>
-                                                                <th>ID</th>
-                                                                <th>菜品</th>
-                                                                <th>单价</th>
-                                                                <th>数量</th>
-                                                                <th>总价</th>
-                                                                <th>删除</th>
-                                                            </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                            <tr>
-                                                                <td>1</td>
-                                                                <td>5,
-                                                                </td>
-                                                                <td>张三</td>
-                                                                <td>40%</td>
-                                                                <td>40%</td>
-                                                                <td><a href="">删除</a></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>1</td>
-                                                                <td>5,
-                                                                </td>
-                                                                <td>张三</td>
-                                                                <td>40%</td>
-                                                                <td>40%</td>
-                                                                <td><a href="">删除</a></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>1</td>
-                                                                <td>5,
-                                                                </td>
-                                                                <td>张三</td>
-                                                                <td>40%</td>
-                                                                <td>40%</td>
-                                                                <td><a href="">删除</a></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>1</td>
-                                                                <td>5,
-                                                                </td>
-                                                                <td>张三</td>
-                                                                <td>40%</td>
-                                                                <td>40%</td>
-                                                                <td><a href="">删除</a></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>1</td>
-                                                                <td>5,
-                                                                </td>
-                                                                <td>张三</td>
-                                                                <td>40%</td>
-                                                                <td>40%</td>
-                                                                <td><a href="">删除</a></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>1</td>
-                                                                <td>5,
-                                                                </td>
-                                                                <td>张三</td>
-                                                                <td>40%</td>
-                                                                <td>40%</td>
-                                                                <td><a href="">删除</a></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>1</td>
-                                                                <td>5,
-                                                                </td>
-                                                                <td>张三</td>
-                                                                <td>40%</td>
-                                                                <td>40%</td>
-                                                                <td><a href="">删除</a></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>1</td>
-                                                                <td>5,
-                                                                </td>
-                                                                <td>张三</td>
-                                                                <td>40%</td>
-                                                                <td>40%</td>
-                                                                <td><a href="">删除</a></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>1</td>
-                                                                <td>5,
-                                                                </td>
-                                                                <td>张三</td>
-                                                                <td>40%</td>
-                                                                <td>40%</td>
-                                                                <td><a href="">删除</a></td>
-                                                            </tr>
-                                                            </tbody>
-                                                            <tfoot class="waiting">
-                                                            <tr>
-                                                                <th>共计：</th>
-                                                                <th></th>
-                                                                <th></th>
-                                                                <th>9999份</th>
-                                                                <th>9999元</th>
-                                                                <th></th>
-                                                            </tr>
-                                                            </tfoot>
-                                                        </table>
-                                                    </div>
-                                                    <div class="modal-footer">
-
-                                                        <button type="button" class="btn btn-primary">确认打印</button>
-                                                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                </td>
-                                <td>5,3,2,-1,-3,-2,2,3,5,2
-                                </td>
-                                <td>张三</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>5,3,9,6,5,9,7,3,5,2</td>
-                                <td>李四</td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>1,6,3,9,5,9,5,3,9,6,4</td>
-                                <td>王麻子</td>
-                            </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title ing">
-                        <h5>正在使用订单<span class="text-danger">（4）</span></h5>
+                <div class='ibox float-e-margins'>
+                    <div class='ibox-title ing'>
+                        <h5>正在使用订单<span class='text-danger' id='order_now_num'></span></h5>
                     </div>
-                    <div class="ibox-content">
-
-                        <table class="table table-hover">
+                    <div class='ibox-content'>
+                        <table class='table table-hover'>
                             <thead>
                             <tr>
                                 <th>订单号</th>
@@ -514,238 +184,11 @@
                                 <th>时间</th>
                             </tr>
                             </thead>
-                            <tbody>
-                            <tr>
-                                <td data-toggle="modal" data-target="#myModal5" style="cursor:pointer;">1
-                                    <div class="modal inmodal" id="myModal5" tabindex="-1" role="dialog"  aria-hidden="true">
-                                        <div class="modal-dialog" style="width: 1000px;">
-                                            <div class="modal-content animated fadeIn" style="float: left;width: 600px;height: 860px;">
-                                                <div class="modal-header ing" style="padding: 15px;">
-
-                                                    <h4 class="text-danger" style="font-size: 20px;text-align: left;">201633214111212<span style="font-size: 16px;">&nbsp;&nbsp;&nbsp;&nbsp;22:22:22（满汉全席6人）</span></h4>
-
-                                                </div>
-                                                <div class="modal-body">
-                                                    <div class="ibox-content">
-
-                                                        <table class="table table-striped">
-                                                            <thead>
-                                                            <tr>
-                                                                <th>ID</th>
-                                                                <th>菜品</th>
-                                                                <th>单价</th>
-                                                                <th>数量</th>
-                                                                <th>总价</th>
-                                                                <th>删除</th>
-                                                            </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                            <tr>
-                                                                <td>1</td>
-                                                                <td>5,
-                                                                </td>
-                                                                <td>张三</td>
-                                                                <td>40%</td>
-                                                                <td>40%</td>
-                                                                <td><a href="">删除</a></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>1</td>
-                                                                <td>5,
-                                                                </td>
-                                                                <td>张三</td>
-                                                                <td>40%</td>
-                                                                <td>40%</td>
-                                                                <td><a href="">删除</a></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>1</td>
-                                                                <td>5,
-                                                                </td>
-                                                                <td>张三</td>
-                                                                <td>40%</td>
-                                                                <td>40%</td>
-                                                                <td><a href="">删除</a></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>小计：</td>
-                                                                <td>
-                                                                </td>
-                                                                <td></td>
-                                                                <td></td>
-                                                                <td>&yen;9999.50</td>
-                                                                <td><a href="">补打小票</a></td>
-                                                            </tr>
-                                                            <tr style="background:#91d08f;">
-                                                                <td class="text-danger">2016343444444444-1</td>
-                                                                <td></td>
-                                                                <td></td>
-                                                                <td></td>
-                                                                <td></td>
-                                                                <td></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>1</td>
-                                                                <td>5,
-                                                                </td>
-                                                                <td>张三</td>
-                                                                <td>40%</td>
-                                                                <td>40%</td>
-                                                                <td><a href="">删除</a></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>1</td>
-                                                                <td>5,
-                                                                </td>
-                                                                <td>张三</td>
-                                                                <td>40%</td>
-                                                                <td>40%</td>
-                                                                <td><a href="">删除</a></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>1</td>
-                                                                <td>5,
-                                                                </td>
-                                                                <td>张三</td>
-                                                                <td>40%</td>
-                                                                <td>40%</td>
-                                                                <td><a href="">删除</a></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>1</td>
-                                                                <td>5,
-                                                                </td>
-                                                                <td>张三</td>
-                                                                <td>40%</td>
-                                                                <td>40%</td>
-                                                                <td><a href="">删除</a></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>小计：</td>
-                                                                <td>
-                                                                </td>
-                                                                <td></td>
-                                                                <td></td>
-                                                                <td>&yen;9999.50</td>
-                                                                <td><a href="">补打小票</a></td>
-                                                            </tr>
-                                                            </tbody>
-                                                            <tfoot class="ing">
-                                                            <tr>
-                                                                <th>共计：</th>
-                                                                <th></th>
-                                                                <th></th>
-                                                                <th><span class="text-danger">9999</span>&nbsp;份</th>
-                                                                <th><span class="text-danger">9999.99</span>&nbsp;元</th>
-                                                                <th></th>
-                                                            </tr>
-                                                            </tfoot>
-                                                        </table>
-                                                    </div>
-                                                    <div class="form-group" style="margin-top:20px;height:40px;">
-                                                        <div style="float:left;width:33%;">
-                                                            <label class="label-control" style="float:left;">折扣</label>
-
-                                                            <input type="text" class="form-control text-danger" style="float:left;width:70%;margin-left:10px;">
-                                                        </div>
-                                                        <div style="float:left;width:33%;">
-                                                            <label class="label-control" style="float:left;">实收</label>
-
-                                                            <input type="text" class="form-control text-danger" style="float:left;width:70%;margin-left:10px">
-                                                        </div>
-                                                        <div style="float:left;width:33%;">
-                                                            <label class="label-control" style="float:left;">差额</label>
-                                                            <p style="float:left;width:70%;margin-left:10px;color: red;">123456</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group" style="height:40px;">
-                                                        <label class="checkbox-inline i-checks">
-                                                            <input type="checkbox" value="option3">&nbsp;&nbsp;&nbsp;&nbsp;结账打票</label>
-                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                        <label class="label-control">备注</label>
-                                                        <input type="text" class="form-control" name="" style="display:inline;width:60%;margin-left:10px;">
-                                                    </div>
-                                                </div>
-
-                                                <div class="modal-footer" style="text-align: left;">
-                                                    <button type="button" class="btn btn-primary">仅结账</button>
-                                                    <button type="button" class="btn btn-primary">结账/清桌</button>
-                                                    <button type="button" class="btn btn-white" data-dismiss="modal" style="float: right;">关闭</button>
-
-                                                </div>
-                                            </div>
-                                            <div class="modal-content animated fadeIn" style="float: right;width: 400px;height: 860px;">
-                                                <div class="modal-header" style="padding: 15px;">
-                                                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                                                    <h4 style="font-size: 20px;text-align: left;">操作记录</h4>
-
-                                                </div>
-                                                <div class="modal-body" style="background: #fff;">
-                                                    <div class="do-time">
-                                                        <h4>12:22:22<br>工号001</h4>
-                                                        <div class="do-detail">
-                                                            <div class="do-part">
-                                                                <h5>创建订单</h5>
-                                                                <p>一二三四五六起吧</p>
-
-                                                            </div>
-                                                            <div class="do-part">
-                                                                <h5>创建订单</h5>
-                                                                <p>一二三四五六起吧</p>
-                                                                <p>一二三四五六起吧</p>
-                                                                <p>一二三四五六起吧</p>
-                                                                <p>一二三四五六起吧</p>
-
-                                                            </div>
-                                                        </div>
-                                                        <div style="clear: both;"></div>
-                                                    </div>
-                                                    <div class="do-time">
-                                                        <h4>12:22:22<br>工号001</h4>
-                                                        <div class="do-part">
-
-                                                            <h5>创建订单</h5>
-                                                            <p>一二三四五六起吧</p>
-
-                                                        </div>
-                                                        <div style="clear: both;"></div>
-                                                    </div>
-                                                    <div class="do-time">
-                                                        <h4>12:22:22<br>工号001</h4>
-                                                        <div class="do-part">
-                                                            <h5>创建订单</h5>
-                                                            <p>一二三四五六起吧</p>
-                                                        </div>
-                                                        <div style="clear: both;"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>5,3,2,-1,-3,-2,2,3,5,2</td>
-                                <td>张三</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>5,3,9,6,5,9,7,3,5,2</td>
-                                <td>李四</td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>1,6,3,9,5,9,5,3,9,6,4</td>
-                                <td>王麻子</td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>1,6,3,9,5,9,5,3,9,6,4</td>
-                                <td>王麻子</td>
-                            </tr>
+                            <tbody id="doing_order">
                             </tbody>
                         </table>
                     </div>
                 </div>
-
             </aside>
         </div>
     </div>
@@ -764,14 +207,19 @@
     <!-- iCheck -->
     <script src="/data/javascript/plugins/iCheck/icheck.min.js"></script>
     <script>
-        var type_id_value="<?php echo $type_list[0]['type_id'] ?>";
+        var type_list=eval(<?php echo $type_list;?>);
+        var order_no_list=eval(<?php echo $order_no_list;?>);
+        var type_id_value=type_list[0]['type_id'];
         $(document).ready(function () {
             $('.i-checks').iCheck({
                 checkboxClass: 'icheckbox_square-green',
                 radioClass: 'iradio_square-green'
             });
+            show_table_types();
+            show_no_deal_order();
+            show_doing_order();
             var active = document.getElementById('first_tab');
-            show_tables(type_id_value, active);
+            select_tables(type_id_value, active);
         });
         function login_out(){
             if (confirm('确定要注销账户吗？')) {
@@ -783,13 +231,558 @@
         function toBackstage () {
             top.location = "<?php echo site_url("admin/admin_index/system")?>";
         }
-        function show_tables(_index, o) {
+        // 桌面分类列表展示
+        function show_table_types() {
+            var num = 0;
+            var text = "";
+            var tab_text = "";
+            $.each (type_list ,function(i,row) {
+                var type_id=row.type_id;//分类id
+                var type_name=row.type_name;//分类名称
+                var tab_list=row.tab_list;//餐桌集合
+                tab_text += show_tables(tab_list,type_id);
+                if (num == 0) {
+                    text += " <li class='active'>"+
+                    "<a href='javascript:void(0);' id='first_tab' onclick='select_tables("+type_id+",this);'><span class='nav-label'>"+type_name+"</span></a>"+
+                    "</li>";
+                }else {
+                    text += " <li >"+
+                    "<a href='javascript:void(0);' onclick='select_tables("+type_id+",this);'><span class='nav-label'>"+type_name+"</span></a>"+
+                    "</li>";
+                }
+                num++;
+            });
+            if (num == 0) {
+                text += "<li class='active' ><a href='javascript:show_tab_div(1);'>无餐桌分类</a>"+
+                "</li>";
+            }
+            $("#side-menu").html(text);
+            $("#tables").html(tab_text);
+        }
+        // 餐桌列表展示
+        function show_tables(tab_list,type_id) {
+            var tab_text="";
+            $.each(tab_list, function(i, row){
+                var tab_id = row['tab_id'];
+                var tab_name = row['tab_name'];
+                var tab_person = row['tab_person'];
+                var order_list = row['order_list'];
+                var state_text = '空闲中';
+                var order_person=0;
+                var order_count = 0;
+                var order_money = 0;
+                if(row['tab_state']==2){
+                    var order_title = "";
+                    var log_text = "";
+                    var main_order_count = 0;
+                    var main_order_money = 0;
+                    var sub_order_title = "";
+                    var sub_log_text = "";
+                    var sub_orders_count = 0;
+                    var sub_orders_money = 0;
+                    $.each (order_list,function(i,order){
+                        var sub_order_count = 0;
+                        var sub_order_money = 0;
+                        //order_waiter = order['waiter_id'];
+                        var insert_time = order['insert_time'].substr(order['insert_time'].length -8);
+                        if (order['order_type'] == 0) {
+                            order_title = "<h4 class='text-danger' style='font-size: 20px;text-align: left;'>"+order['order_no']+"<span style='font-size: 16px;'>&nbsp;&nbsp;"+insert_time+"（"+tab_name+"）</span></h4>";
+                            var log_num = 0;
+                            $.each(order['log_list'],function(i,log) {
+                                log_num++;
+                                var log_num_show="";
+                                if(log_num<10){
+                                    log_num_show="00"+log_num;
+                                }else if(log_num<100 && log_num>9){
+                                    log_num_show="0"+log_num;
+                                }else{
+                                    log_num_show=log_num;
+                                }
+                                var log_id = log['log_id'];
+                                var log_count = log['log_count'];
+                                var log_money = log['log_money'];
+                                main_order_count = Number(main_order_count) + Number(log_count);
+                                main_order_money = Number(main_order_money) + Number(log_money);
+                                log_text += "<tr>"+
+                                "<td>"+log_num_show+"</td>"+
+                                "<td>"+log['log_name']+"</td>"+
+                                "<td>"+log['log_price']+"</td>"+
+                                "<td>"+log['log_count']+"</td>"+
+                                "<td>"+log['log_money']+"</td>"+
+                                "<td><a href='javascript:del_log("+tab_id+","+log_id+");'>删除</a></td>"+
+                                "</tr>";
+                            });
+                            log_text +="<tr>"+
+                                        "<td>小计：</td>"+
+                                        "<td></td>"+
+                                        "<td></td>"+
+                                        "<td>"+main_order_count+"</td>"+
+                                        "<td>&yen;"+main_order_money+"</td>"+
+                                        "<td></td>"+
+                                        "</tr>";
+                        } else {
+                            sub_log_text += "<tr style='background:#91d08f;'>"+
+                            "<td class='text-danger'>"+order['order_no']+"</td>"+
+                            "<td></td>"+
+                            "<td></td>"+
+                            "<td></td>"+
+                            "<td></td>"+
+                            "<td></td>"+
+                            "</tr>";
+                            var sub_log_num = 0;
+                            $.each(order['log_list'],function(i,log) {
+                                var logs_count = 0;
+                                var logs_money = 0;
+                                sub_log_num++;
+                                var sub_log_num_show = "";
+                                if (sub_log_num < 10) {
+                                    sub_log_num_show = "00"+sub_log_num;
+                                } else if (sub_log_num < 100 && sub_log_num > 9) {
+                                    sub_log_num_show = "0" + sub_log_num;
+                                } else {
+                                    sub_log_num_show = sub_log_num;
+                                }
+                                var log_id = log['log_id'];
+                                var log_count = log['log_count'];
+                                var log_money = log['log_money'];
+                                sub_order_count = Number(logs_count) + Number(log_count);
+                                sub_order_money = Number(sub_order_money) + Number(log_money);
+                                sub_log_text += "<tr>"+
+                                "<td>"+sub_log_num_show+"</td>"+
+                                "<td>"+log['log_name']+"</td>"+
+                                "<td>"+log['log_price']+"</td>"+
+                                "<td>"+log_count+"</td>"+
+                                "<td>"+log_money+"</td>"+
+                                "<td><a href='javascript:del_log("+tab_id+","+log_id+");'>删除</a></td>"+
+                                "</tr>";
+                            });
+                            sub_log_text += "<tr>"+
+                                        "<td>小计：</td>"+
+                                        "<td></td>"+
+                                        "<td></td>"+
+                                        "<td>"+sub_order_count+"</td>"+
+                                        "<td>&yen;"+sub_order_money+"</td>"+
+                                        "<td></td>"+
+                                        "</tr>";
+                        }
+                        sub_orders_count += sub_order_count;
+                        sub_orders_money += sub_order_money;
+
+                    });
+                    order_count = main_order_count + sub_orders_count;
+                    order_money = main_order_money +sub_orders_money;
+                    var order_person=order_list[0]['order_person'];
+                    var state_text = '查看订单';
+                    tab_text += "<div class='table-menu' name='show_tab_"+type_id+"'>"+
+                    "<div class='table-on'>"+
+                    "<h1>"+tab_name+"</h1>"+
+                    "</div>"+
+                    "<div class='table-text'>"+
+                    "<h3><span style='color:#e65445;'>"+order_person+"</span>/"+tab_person+"</h3>"+
+                    "<h4 data-toggle='modal' data-target='#tab_"+tab_id+"'>"+state_text+"</h4>"+
+                    "</div>"+
+                    "</div>"+
+                    "<div class='modal inmodal' id='tab_"+tab_id+"' tabindex='-1' role='dialog'  aria-hidden='true'>"+
+                    "<div class='modal-dialog'>"+
+                    "<div class='modal-content animated fadeIn'>"+
+
+                    "<div class='modal-header waiting' style='padding: 15px;'>"+
+                    "<button type='button' class='close' data-dismiss='modal'><span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button>"+
+                    order_title+
+                    "</div>"+
+
+                    "<div class='modal-body'>"+
+                    "<div class='ibox-content'>"+
+                    "<table class='table table-striped'>"+
+                    "<thead>"+
+                    "<tr>"+
+                    "<th>ID</th>"+
+                    "<th>菜品</th>"+
+                    "<th>单价</th>"+
+                    "<th>数量</th>"+
+                    "<th>总价</th>"+
+                    "<th>删除</th>"+
+                    "</tr>"+
+                    "</thead>"+log_text+sub_order_title+sub_log_text+
+                    "<tfoot class='waiting'>"+
+                    "<tr>"+
+                    "<th>共计</th>"+
+                    "<th></th>"+
+                    "<th></th>"+
+                    "<th>"+order_count+"份</th>"+
+                    "<th>"+order_money+"元</th>"+
+                    "<th></th>"+
+                    "</tr>"+
+                    "</tfoot>"+
+                    "</table>"+
+                    "</div>"+
+                    "</div>"+
+
+                    "<div class='modal-footer'>"+
+                    "<button type='button' class='btn btn-primary'>确认打印</button>"+
+                    "<button type='button' class='btn btn-white' data-dismiss='modal'>关闭</button>"+
+                    "</div>"+
+
+                    "</div>"+
+                    "</div>"+
+                    "</div>";
+
+                } else {
+                    tab_text += "<div class='table-menu' name='show_tab_"+type_id+"'>"+
+                    "<div class='table-off'>"+
+                    "<h1>"+tab_name+"</h1>"+
+                    "</div>"+
+                    "<div class='table-text'>"+
+                    "<h3><span style='color:#e65445;'>"+order_person+"</span>/"+tab_person+"</h3>"+
+                    "<h4 style='color:#676a6c;cursor:default;'>"+state_text+"</h4>"+
+                    "</div>"+
+                    "</div>";
+                }
+            });
+            return tab_text;
+        }
+        function select_tables(_index, o) {
             /*if (!$(o).parent().hasClass('active')) {*/
                 $("#side-menu li").removeClass('active');
                 $(o).parent().addClass('active');
                 $(".table-menu").hide();
                 $(".table-menu[name='show_tab_"+_index+"']").show();
            /* }*/
+        }
+        // 未处理订单
+        function show_no_deal_order(){
+            var order_money = 0;
+            var order_count = 0;
+            var order_list_text = "";
+            $.each(order_no_list, function(i,row){
+                var tab_id = row['tab_id'];
+                var insert_time=row['insert_time'].substr(row['insert_time'].length -8 );
+                var log_text = "";
+                var log_num = 0;
+                var order_now_num_show = "";
+                $.each(row['log_list'],function(i,log){
+                    log_num++;
+                    if(log_num<10){
+                        order_now_num_show = "0"+log_num;
+                    }
+                    var log_id = log['log_id'];
+                    order_money = order_money + Number(log['log_money']);
+                    order_count = order_count + Number(log['log_count']);
+                    log_text += "<tr>"+
+                    "<td>"+order_now_num_show+"</td>"+
+                    "<td>"+log['log_name']+"</td>"+
+                    "<td>"+log['log_price']+"</td>"+
+                    "<td>"+log['log_count']+"</td>"+
+                    "<td>"+log['log_money']+"</td>"+
+                    "<td><a href='javascript:del_log("+tab_id+","+log_id+");'>删除</a></td>"+
+                    "</tr>";
+                });
+                order_list_text += "<tr>"+
+                                "<td data-toggle='modal' data-target='#no_deal_"+row['order_id']+"' style='cursor:pointer;'>"+row['order_no']+
+                                "</td>"+
+                                "<td>"+row['tab_name']+"</td>"+
+                                "<td>"+insert_time+"</td>"+
+                                "</tr>";
+
+                $("#wrapper").append("<div class='modal inmodal' id='no_deal_"+row['order_id']+"' tabindex='-1' role='dialog'  aria-hidden='true'>"+
+                "<div class='modal-dialog'>"+
+                "<div class='modal-content animated fadeIn'>"+
+
+                "<div class='modal-header waiting' style='padding: 15px;'>"+
+                "<button type='button' class='close' data-dismiss='modal'><span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button>"+
+                "<h4 class='text-danger' style='font-size: 20px;text-align: left;'>"+row['order_no']+"<span style='font-size: 16px;'>&nbsp;&nbsp;"+insert_time+"（"+row['tab_name']+"）</span></h4>"+
+                "</div>"+
+
+                "<div class='modal-body'>"+
+                "<div class='ibox-content'>"+
+                "<table class='table table-striped'>"+
+                "<thead>"+
+                "<tr>"+
+                "<th>ID</th>"+
+                "<th>菜品</th>"+
+                "<th>单价</th>"+
+                "<th>数量</th>"+
+                "<th>总价</th>"+
+                "<th>删除</th>"+
+                "</tr>"+
+                "</thead>"+log_text+
+                "<tfoot class='waiting'>"+
+                "<tr>"+
+                "<th>共计</th>"+
+                "<th></th>"+
+                "<th></th>"+
+                "<th>"+order_count+"份</th>"+
+                "<th>"+order_money+"元</th>"+
+                "<th></th>"+
+                "</tr>"+
+                "</tfoot>"+
+                "</table>"+
+                "</div>"+
+                "</div>"+
+
+                "<div class='modal-footer'>"+
+                "<button type='button' class='btn btn-primary'>确认打印</button>"+
+                "<button type='button' class='btn btn-white' data-dismiss='modal'>关闭</button>"+
+                "</div>");
+            });
+            $("#no_deal_list").html(order_list_text);
+        }
+        // 正在进行中的订单
+        function show_doing_order() {
+            var order_now_num = 0;
+            var main_order_text = "";
+            var main_log_money = 0;
+            var main_log_count = 0;
+            var order_money = 0;
+            var order_count = 0;
+            var main_log_text = "";
+            var sub_log_text = "";
+            var main_order_id = "";
+            var main_order_no = "";
+            var main_tab_name = "";
+            var main_insert_time="";
+            $.each(type_list, function(i,type){
+                var tab_list = type['tab_list'];
+                var type_id = type['type_id'];
+                if (tab_list) {
+                    $.each (tab_list,function(i, row){
+                        var tab_id = row['tab_id'];
+                        var tab_state = row['tab_state'];
+                        var order_list = row['order_list'];
+                        var order_now_num_show = 0;
+                        if (tab_state == 2) {
+                            order_now_num++;
+                            if(order_now_num<10){
+                                order_now_num_show="0"+order_now_num;
+                            }
+                            var sub_log_money = 0;
+                            var sub_log_count = 0;
+                            $.each(order_list,function(i,order) {
+                                if (order['order_type'] == 0) {
+                                    main_order_id = order['order_id'];
+                                    main_order_no = order['order_no'];
+                                    main_tab_name = row['tab_name'];
+                                    main_insert_time=order['insert_time'];//订单时间
+                                    main_insert_time=main_insert_time.substr(main_insert_time.length - 8);
+                                    main_order_text += "<tr>"+
+                                                        "<td data-toggle='modal' data-target='#order_"+main_order_id+"' style='cursor:pointer;'>"+main_order_no+
+                                                        "</td>"+
+                                                        "<td>"+main_tab_name+"</td>"+
+                                                        "<td>"+main_insert_time+"</td>"+
+                                                        "</tr>";
+                                    var log_list = order['log_list'];
+
+                                    var main_log_num = 0;
+                                    order_now_num_show = "";
+                                    $.each(log_list,function(i,log){
+                                        main_log_num++;
+                                        if(main_log_num<10){
+                                            order_now_num_show="0"+main_log_num;
+                                        }
+                                        var log_id = log['log_id'];
+                                        main_log_money = main_log_money + Number(log['log_money']);
+                                        main_log_count = main_log_count + Number(log['log_count']);
+                                        main_log_text+= "<tr>"+
+                                        "<td>"+order_now_num_show+"</td>"+
+                                        "<td>"+log['log_name']+"</td>"+
+                                        "<td>"+log['log_price']+"</td>"+
+                                        "<td>"+log['log_count']+"</td>"+
+                                        "<td>"+log['log_money']+"</td>"+
+                                        "<td><a href='javascript:del_log("+tab_id+","+log_id+");'>删除</a></td>"+
+                                        "</tr>";
+                                    });
+                                }else {
+                                    var sub_log_num = 0;
+                                    var order_now_num_show = "";
+                                    sub_log_text += "<tr style='background:#91d08f;'>"+
+                                    "<td class='text-danger'>"+order['order_no']+"</td>"+
+                                    "<td></td>"+
+                                    "<td></td>"+
+                                    "<td></td>"+
+                                    "<td></td>"+
+                                    "<td></td>"+
+                                    "</tr>";
+                                    var log_list = order['log_list'];
+                                    $.each(log_list,function(i,log){
+                                        sub_log_num++;
+                                        sub_log_money = sub_log_money + Number(log['log_money']);
+                                        sub_log_count = sub_log_count +Number(log['log_count']);
+                                        var log_id = log['log_id'];
+                                        if (sub_log_num < 10) {
+                                            order_now_num_show= "0"+sub_log_num;
+                                        }
+                                        sub_log_text += "<tr>"+
+                                        "<td>"+order_now_num_show+"</td>"+
+                                        "<td>"+log['log_name']+"</td>"+
+                                        "<td>"+log['log_price']+"</td>"+
+                                        "<td>"+log['log_count']+"</td>"+
+                                        "<td>"+log['log_money']+"</td>"+
+                                        "<td><a href='javascript:del_log("+tab_id+","+log_id+");'>删除</a></td>"+
+                                        "</tr>";
+                                    });
+                                    sub_log_text += "<tr>"+
+                                                    "<td>小计：</td>"+
+                                                    "<td></td>"+
+                                                    "<td></td>"+
+                                                    "<td></td>"+
+                                                    "<td>&yen;"+sub_log_money+"</td>"+
+                                                    "<td><a href=''>补打小票</a></td>"+
+                                                    "</tr>";
+                                }
+                                order_money = main_log_money + sub_log_money;
+                                order_count = main_log_count + sub_log_count;
+                            });
+                            $("#wrapper").append("<div class='modal inmodal' id='order_"+main_order_id+"' tabindex='-1' role='dialog'  aria-hidden='true'>"+
+                            "<div class='modal-dialog' style='width: 1000px;'>"+
+                            "<div class='modal-content animated fadeIn' style='float: left;width: 600px;'>"+
+                            "<div class='modal-header ing' style='padding: 15px;'>"+
+                            "<h4 class='text-danger' style='font-size: 20px;text-align: left;'>"+main_order_no+"<span style='font-size: 16px;'>&nbsp;&nbsp;&nbsp;&nbsp;"+main_insert_time+"（"+main_tab_name+"）</span></h4>"+
+                            "</div>"+
+                            "<div class='modal-body'>"+
+                            "<div class='ibox-content'>"+
+                            "<table class='table table-striped'>"+
+                            "<thead>"+
+                            "<tr>"+
+                            "<th>ID</th>"+
+                            "<th>菜品</th>"+
+                            "<th>单价</th>"+
+                            "<th>数量</th>"+
+                            "<th>总价</th>"+
+                            "<th>删除</th>"+
+                            "</tr>"+
+                            "</thead>"+
+                            "<tbody>"+
+                            main_log_text+
+                            "<tr>"+
+                            "<td>小计：</td>"+
+                            "<td>"+
+                            "</td>"+
+                            "<td></td>"+
+                            "<td></td>"+
+                            "<td>&yen;"+main_log_money+"</td>"+
+                            "<td><a href=''>补打小票</a></td>"+
+                            "</tr>"+
+                            sub_log_text+
+                            "</tbody>"+
+                            "<tfoot class='ing'>"+
+                            "<tr>"+
+                            "<th>共计：</th>"+
+                            "<th></th>"+
+                            "<th></th>"+
+                            "<th><span class='text-danger'>"+order_count+"</span>&nbsp;份</th>"+
+                            "<th><span class='text-danger'>"+order_money+"</span>&nbsp;元</th>"+
+                            "<th></th>"+
+                            "</tr>"+
+                            "</tfoot>"+
+                            "</table>"+
+                            "</div>"+
+                            "<div class='form-group' style='margin-top:20px;height:40px;'>"+
+                            "<div style='float:left;width:33%;'>"+
+                            "<label class='label-control' style='float:left;'>折扣</label>"+
+
+                            "<input type='text' class='form-control text-danger' style='float:left;width:70%;margin-left:10px;'>"+
+                            "</div>"+
+                            "<div style='float:left;width:33%;'>"+
+                            "<label class='label-control' style='float:left;'>实收</label>"+
+
+                            "<input type='text' class='form-control text-danger' style='float:left;width:70%;margin-left:10px'>"+
+                            "</div>"+
+                            "<div style='float:left;width:33%;'>"+
+                            "<label class='label-control' style='float:left;'>差额</label>"+
+                            "<p style='float:left;width:70%;margin-left:10px;color: red;'>123456</p>"+
+                            "</div>"+
+                            "</div>"+
+                            "<div class='form-group' style='height:40px;'>"+
+                            "<label class='checkbox-inline i-checks'>"+
+                            "<input type='checkbox' value='option3'>&nbsp;&nbsp;&nbsp;&nbsp;结账打票</label>"+
+                            "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+
+                            "<label class='label-control'>备注</label>"+
+                            "<input type='text' class='form-control' name='' style='display:inline;width:60%;margin-left:10px;'>"+
+                            "</div>"+
+                            "</div>"+
+
+                            "<div class='modal-footer' style='text-align: left;'>"+
+                            "<button type='button' class='btn btn-primary'>仅结账</button>"+
+                            "<button type='button' class='btn btn-primary'>结账/清桌</button>"+
+                            "<button type='button' class='btn btn-white' data-dismiss='modal' style='float: right;'>关闭</button>"+
+
+                            "</div>"+
+                            "</div>"+
+                            "<div class='modal-content animated fadeIn' style='float: right;width: 400px;'>"+
+                            "<div class='modal-header' style='padding: 15px;'>"+
+                            "<button type='button' class='close' data-dismiss='modal'><span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button>"+
+                            "<h4 style='font-size: 20px;text-align: left;'>操作记录</h4>"+
+
+                            "</div>"+
+                            "<div class='modal-body' style='background: #fff;'>"+
+                            "<div class='do-time'>"+
+                            "<h4>12:22:22<br>工号001</h4>"+
+                            "<div class='do-detail'>"+
+                            "<div class='do-part'>"+
+                            "<h5>创建订单</h5>"+
+                            " <p>一二三四五六起吧</p>"+
+
+                            "</div>"+
+                            "<div class='do-part'>"+
+                            "<h5>创建订单</h5>"+
+                            "<p>一二三四五六起吧</p>"+
+                            "<p>一二三四五六起吧</p>"+
+                            "<p>一二三四五六起吧</p>"+
+                            "<p>一二三四五六起吧</p>"+
+
+                            "</div>"+
+                            "</div>"+
+                            "<div style='clear: both;'></div>"+
+                            "</div>"+
+                            "<div class='do-time'>"+
+                            "<h4>12:22:22<br>工号001</h4>"+
+                            "<div class='do-part'>"+
+
+                            "<h5>创建订单</h5>"+
+                            "<p>一二三四五六起吧</p>"+
+
+                            "</div>"+
+                            "<div style='clear: both;'></div>"+
+                            "</div>"+
+                            "<div class='do-time'>"+
+                            "<h4>12:22:22<br>工号001</h4>"+
+                            "<div class='do-part'>"+
+                            "<h5>创建订单</h5>"+
+                            "<p>一二三四五六起吧</p>"+
+                            "</div>"+
+                            "<div style='clear: both;'></div>"+
+                            "</div>"+
+                            "</div>"+
+                            "</div>"+
+                            "</div>"+
+                            "</div>");
+                        }
+                    });
+                }
+            });
+            $("#order_now_num").text("（"+order_now_num+"）");
+            $("#doing_order").html(main_order_text);
+        }
+        function del_log(do_tab_id,do_log_id){
+            var result = confirm('您确认要删除该订单菜品吗？');
+            if(result){
+                $.ajax({
+                    url:'<?php echo site_url("admin/admin_bar/del_log")?>',
+                    type: "POST",
+                    data:{log_id:do_log_id},
+                    success: function(data,status){//如果调用php成功
+                        // data=eval(data);
+                        // type_list=data['type_list'];
+                        // order_no_list=data['order_no_list'];
+                        //table_show();
+                        //order_show();
+                        // show_order_tab();
+                        // window.location.reload();
+                        //$("#tab_order_"+do_tab_id).click();
+                        // $("#close_tab_"+do_tab_id).click();
+                    }
+                });
+            }
         }
     </script>
 

@@ -88,7 +88,7 @@ class Admin_bar_model extends MY_Model {
 			$type_list[$i]['tab_list']=$tab_list;
 		}
         //等待处理的订单
-        $str="select a.order_id,a.order_type,a.father_id,a.order_no,a.waiter_id,a.order_person,a.insert_time,b.tab_name,b.tab_person,c.type_name from shop_order a,shop_table b,shop_table_type c where a.shop_id=$shop_id and a.order_state=0 and a.table_id=b.tab_id and b.type_id=c.type_id";
+        $str="select a.order_id,a.order_type,a.father_id,a.order_no,a.waiter_id,a.order_person,a.insert_time,b.tab_id,b.tab_name,b.tab_person,c.type_name from shop_order a,shop_table b,shop_table_type c where a.shop_id=$shop_id and a.order_state=0 and a.table_id=b.tab_id and b.type_id=c.type_id";
         $order_no_list=$this->select_all($str);
         for ($z=0;$z<count($order_no_list);$z++){
         	$one=$order_no_list[$z];
