@@ -91,8 +91,12 @@ class Admin_set extends MY_Controller {
 	}
 	public function set_update(){
 		$bl=$this->system_set_model->set_upd();
-		if((int)$bl==-1){
-			echo "<script>alert('已存在同名的套餐，请核实!');history.go(-1);</script>";
+		echo $bl;
+		/*if((int)$bl==-1){
+			echo "<script>alert('已存在同名的套餐，请核实!');</script>";
+			$set_id=$_POST['set_id'];
+			$data=$this->system_set_model->get_set($set_id);
+			$this->load->view('base/dishes/addOrEditPackage',$data);
 		}else{
 			if($bl){
 				$this->set_list();
@@ -102,7 +106,7 @@ class Admin_set extends MY_Controller {
 				$data=$this->system_set_model->get_set($set_id);
 				$this->load->view('base/dishes/addOrEditPackage',$data);
 			}
-		}
+		}*/
 	}
 	//添加套餐
 	public function set_add_show(){
@@ -111,15 +115,20 @@ class Admin_set extends MY_Controller {
 	}
 	public function set_add(){
 		$bl=$this->system_set_model->set_add();
-		if((int)$bl==-1){
-			echo "<script>alert('已存在同名的套餐，请核实!');history.go(-1);</script>";
+		echo $bl;
+		/*if((int)$bl==-1){
+			echo "<script>alert('已存在同名的套餐，请核实!');</script>";
+			$data=$this->system_set_model->get_dish_list();
+			$this->load->view('base/dishes/addOrEditPackage',$data);
 		}else{
 			if($bl){
 				$this->set_list();
 			}else{
-				echo "<script>alert('操作执行失败，请重试!');history.go(-1);</script>";
+				echo "<script>alert('操作执行失败，请重试!');</script>";
+				$data=$this->system_set_model->get_dish_list();
+				$this->load->view('base/dishes/addOrEditPackage',$data);
 			}
-		}
+		}*/
 	}
 }
 ?>

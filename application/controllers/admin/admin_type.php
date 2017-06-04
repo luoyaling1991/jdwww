@@ -14,7 +14,14 @@ class Admin_type extends MY_Controller {
 		$data=$this->system_type_model->type_list();
 		$this->load->view('base/dishType/list',$data);
 	}
-	//分类编辑】
+	// 获取分类下的菜品
+	public function get_dish_list(){
+		$type_id=$_GET['type_id'];
+		$data=$this->system_type_model->get_type($type_id);
+		$data=$this->JSON($data);
+		echo $data;
+	}
+	//分类编辑
 	public function type_update_show(){
 		
 		$type_id=$_GET['type_id'];
@@ -38,11 +45,14 @@ class Admin_type extends MY_Controller {
 		$this->load->view('base/dishType/list',$data);
 	}
 	public function type_add(){
-		$bl=$this->system_type_model->type_add();
+		$type_name = $_POST['type_name'];
+		$bl=$this->system_type_model->type_add($type_name);
 		if($bl){
-			$this->type_list();
+			$data=$this->system_type_model->type_list();
+			$data=$this->JSON($data['type_list_1']);
+			echo $data;
 		}else{
-			echo "<script>alert('操作执行失败，请重试!');history.go(-1);</script>";
+			echo "1";
 		}
 	}
 	//删除分类信息
@@ -52,27 +62,33 @@ class Admin_type extends MY_Controller {
 		$tab_id=$_GET['type_id'];
 		$this->util_model->delete_do($tab_name,$tab_id_name,$tab_id);//删除菜品
 		$this->util_model->delete_do("shop_dish_type_log",$tab_id_name,$tab_id);//删除菜品关联的分类
-		$this->type_list();
+		$data=$this->system_type_model->type_list();
+		$data=$this->JSON($data['type_list_1']);
+		echo $data;
+		//$this->type_list();
 	}
 	//分类排序
 	public function type_sort(){
-		$sort_id=$_GET['sort_id'];
-		$sort_value_1=$_GET['sort_value_1'];
-		$sort_value_2=$_GET['sort_value_2'];
-		$sort_type=$_GET['sort_type'];
+		$sort_id=$_POST['sort_id'];
+		$sort_value_1=$_POST['sort_value_1'];
+		$sort_value_2=$_POST['sort_value_2'];
+		$sort_type=$_POST['sort_type'];
 		$tab_name="shop_dish_type";
 		$tab_asc="type_asc";
 		$asc_type=$sort_type;
 		$upd_arr=array("type_id"=>$sort_id);
 		$where_arr=array('shop_id'=>$_SESSION['admin_user']['shop_id']);
 		
-		$sort_value=$_GET['sort_value'];
-		$sort_id_1=$_GET['tab_id_1'];
-		$sort_id_2=$_GET['tab_id_2'];
+		$sort_value=$_POST['sort_value'];
+		$sort_id_1=$_POST['tab_id_1'];
+		$sort_id_2=$_POST['tab_id_2'];
 		$tab_sort_id="type_id";
 		$this->util_model->sort_do_1($tab_sort_id,$sort_value,$sort_id_1,$sort_id_2,$tab_name,$tab_asc,$asc_type,$where_arr,$upd_arr,$sort_value_1,$sort_value_2);
 		//$this->util_model->sort_do($tab_name,$tab_asc,$asc_type,$where_arr,$upd_arr,$sort_value_1,$sort_value_2);
-		$this->type_list();
+		$data=$this->system_type_model->type_list();
+		$data=$this->JSON($data['type_list_1']);
+		echo $data;
+		//$this->type_list();
 	}
 	//批量处理
 	public function type_batch(){
@@ -88,7 +104,8 @@ class Admin_type extends MY_Controller {
 				$this->util_model->batch_do("shop_dish_type_log",$tab_id_name,$tab_id,$state_name,$batch_value);
 			}
 		}
-		$this->type_list();
+		$data=$this->system_type_model->type_list();
+		echo $data;
 	}
 	public function type_list_do(){
 		$where_arr=$_GET['where_arr'];
@@ -100,6 +117,20 @@ class Admin_type extends MY_Controller {
 		$page=&$_GET['page'];
 		$data=$this->system_dish_model->dish_list($where_arr,$type_id,$asc_name,$asc_type,$page);
 		$this->load->view('base/dishType/list',$data);
+	}
+	public function  add_type_log() {
+		$type_id = $_POST['type_id'];
+		// 分类下选中的菜品
+		$dish_list_log = $_POST['dish_list_log'];
+		$bl=$this->system_type_model->type_add_log($type_id,$dish_list_log);
+		unset($dish_list_log);
+		if($bl){
+			$data=$this->system_type_model->type_list();
+			$data=$this->JSON($data['type_list_1']);
+			echo $data;
+		}else{
+			echo "1";
+		}
 	}
 	
 }

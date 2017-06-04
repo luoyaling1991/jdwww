@@ -17,7 +17,7 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="ibox float-e-margins" >
-                <form method="post" class="form-horizontal" id="form">
+                <form method="post" class="form-horizontal" id="form" enctype="multipart/form-data">
                     <div class="form-group">
                         <label class="col-sm-1 control-label">名称设置</label>
                         <div class="col-md-6">
@@ -87,15 +87,15 @@
                                     if (isset($type_id_list) && in_array($type_id, $type_id_list)) {
                                         echo "<div class='checkbox i-checks checkbox-inline' style='margin-right:20px;'>
                                     <input type='checkbox' value='{$type_id}' name='dish_type[]' checked>
-                                    &nbsp;&nbsp;{$type_name}
+                                    <label style='padding:0px;width:100px;'>{$type_name}</label>
                                     </div>";
                                     }else{
                                         echo "<div class='checkbox i-checks checkbox-inline' style='margin-right:20px;'>
                                     <input type='checkbox' value='{$type_id}' name='dish_type[]'>
-                                    &nbsp;&nbsp;{$type_name}
+                                    <label style='padding:0px;width:100px;'>{$type_name}</label>
                                     </div>";
                                     }
-                                    if($num%7==0){
+                                    if($num%4==0){
                                         echo "<br>";
                                     }
                                 }
@@ -125,7 +125,7 @@
                                 <div id="dish_images">
                                     <?php
                                     $num=0;
-                                    if (isset($dish)) {
+                                    if (isset($dish['images'])) {
                                         foreach ($dish['images'] as $value){
                                             if ($value) {
                                                 $url = '/'.$value;
@@ -259,13 +259,13 @@
                         <label class="col-md-3 control-label">分类名称</label>
                         <div class="col-md-8">
                             <input class="form-control" id="type_name" name="type_name" type="text" value="" placeholder="四个字以内"/>
+                            <span id="dish_type_name_1"></span>
                         </div>
-                        <span id="dish_type_1"></span>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="saveAddType();" data-dismiss="modal">保存</button>
+                <button type="button" class="btn btn-primary" onclick="saveAddType();">保存</button>
                 <button type="button" class="btn btn-white" data-dismiss="modal">取消</button>
             </div>
         </div>
@@ -506,7 +506,7 @@
                         if (result) {
                             fileImg = result.toDataURL('image/jpg');
                             $(currentImg).attr("src", fileImg);
-                            $(target).attr('data-dismiss', 'modal');
+                            $("#editImage").modal('hide');
                         }
                         break;
 
@@ -674,7 +674,6 @@
             }
         }
         if (imgs.length > 0) {
-            console.log(imgs);
             $.ajax({
                 url: '<?php echo site_url("admin/admin_dish/add_img")?>',
                 type: 'POST',
@@ -694,11 +693,25 @@
                     // 新增修改记录
                     var formData = $('#form').serialize();
                     var dish_id = "<?php if (isset($dish)){echo $dish['dish_id'];}?>";
+                    var url = '<?php echo site_url("admin/admin_dish/dish_add");?>';
                     if (dish_id) {
-                        setContentUrl('<?php echo site_url("admin/admin_dish/dish_update");?>', formData);
-                    }else {
-                        setContentUrl('<?php echo site_url("admin/admin_dish/dish_add");?>', formData);
+                        url = '<?php echo site_url("admin/admin_dish/dish_update");?>';
                     }
+                    $.ajax({
+                        url: url,
+                        type: "POST",
+                        data: formData,
+                        dataType: "json",
+                        success: function (data, status) {//如果调用php成功
+                            if (!data){
+                                alert('操作执行失败，请重试!');
+                            }else if (Number(data) == -1){
+                                alert('已存在同名的菜品，请核实!');
+                            } else {
+                                setContentUrl('<?php echo site_url('admin/admin_dish_set/dish_set_list')?>');
+                            }
+                        }
+                    });
                 },
                 error: function (returndata) {
                 }
@@ -711,11 +724,25 @@
             })
             var formData = $('#form').serialize();
             var dish_id = "<?php if (isset($dish)){echo $dish['dish_id'];}?>";
+            var url = '<?php echo site_url("admin/admin_dish/dish_add");?>';
             if (dish_id) {
-                setContentUrl('<?php echo site_url("admin/admin_dish/dish_update");?>', formData);
-            }else {
-                setContentUrl('<?php echo site_url("admin/admin_dish/dish_add");?>', formData);
+                url = '<?php echo site_url("admin/admin_dish/dish_update");?>';
             }
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: formData,
+                dataType: "json",
+                success: function (data, status) {//如果调用php成功
+                    if (!data){
+                        alert('操作执行失败，请重试!');
+                    }else if (Number(data) == -1){
+                        alert('已存在同名的菜品，请核实!');
+                    } else {
+                        setContentUrl('<?php echo site_url('admin/admin_dish_set/dish_set_list')?>');
+                    }
+                }
+            });
         }
     }
     function saveAddType() {
@@ -724,17 +751,24 @@
         var name = $('#type_name').val();
         if (name!=null && name!="" && name.length<5){
             $.post('<?php echo site_url('admin/admin_dish/dish_type_add')?>',{type_name:name},function (data){
-                $(target).attr('data-dismiss', 'modal');
                 data=JSON.parse(data);
-                $("#dish_types").append("<div class='checkbox i-checks checkbox-inline' style='margin-right:20px;'><div class='icheckbox_square-green' style='position: relative;'><input type='checkbox' value='"+data.type_id+"' name='dish_type[]' checked style='position: absolute; opacity: 0;'><ins class='iCheck-helper' style='position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;'></ins></div>&nbsp;&nbsp;"+data.type_name+"</div>");
+                $("#dish_type_1").before("<div class='checkbox i-checks checkbox-inline' style='margin-right:20px;'><input type='checkbox' value='"+data.type_id+"' name='dish_type[]' style='position: absolute; opacity: 0;'><label style='margin:0 0 0 4px;padding:0;width:100px;'>"+data.type_name+"</label></div>");
                 var num = $("#dish_types .i-checks").length;
-                if(num%7==0){
-                    $("#dish_types").append("<br>");
+                if(num%4==0){
+                    $("#dish_type_1").before("<br>");
                 }
+                $("#addType").modal('hide');
+                init_check();
             });
         }else{
-            $("#dish_type_1").html("菜品分类名称只能4个字以内，且不能为空.");
-            $("#dish_type_1").css("color","red");
+            $("#dish_type_name_1").html("菜品分类名称只能4个字以内，且不能为空.");
+            $("#dish_type_name_1").css("color","red");
         }
+    }
+    function init_check(){
+        $("#dish_types .i-checks").iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green'
+        });
     }
 </script>

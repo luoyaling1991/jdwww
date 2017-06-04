@@ -79,7 +79,7 @@ class Admin_mall extends MY_Controller {
 		//订单描述
 		$body = $log['i_time'];
 		//商品展示地址
-		$show_url ="http://www.jdmenu.cn/";
+		$show_url =BASE_URL;
 		//需以http://开头的完整路径，例如：http://www.商户网址.com/myorder.html
 		//防钓鱼时间戳
 		$anti_phishing_key = "";

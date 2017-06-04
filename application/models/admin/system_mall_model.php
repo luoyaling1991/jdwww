@@ -7,7 +7,7 @@ class System_mall_model extends MY_Model {
 		}  
 	}
 	function vip_list(){
-		$res = $this->db->select('*')->where(array('v_state'=>1))->order_by('v_time','desc')->get('sys_vip');
+		$res = $this->db->select('*')->where(array('v_state'=>1))->order_by('v_month','asc')->get('sys_vip');
 		$list = $res->result_array();
 		return array("list"=>$list);
 	}

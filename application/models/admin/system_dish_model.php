@@ -25,7 +25,7 @@ class System_dish_model extends MY_Model {
 			$totalPage = 1;
 		}
 		if($type_id!="" && $type_id!=-1){
-			$str="select a.dish_id,a.dish_name,a.dish_price,a.dish_count,a.dish_state,a.insert_time  from shop_dish a where a.dish_id in (select b.dish_id from shop_dish_type_log b where  b.log_type=0 and b.shop_id={$_SESSION['admin_user']['shop_id']} and b.type_id={$type_id}) {$where_arr} order by $asc_name $asc_type limit $page_sum,$size";
+			$str="select a.dish_id,a.dish_name,a.dish_price,a.dish_count,a.dish_state,a.insert_time  from shop_dish a where a.dish_id in (select b.dish_id from shop_dish_type_log b where  b.log_type=0 and b.shop_id={$_SESSION['admin_user']['shop_id']} and b.type_id={$type_id}{$where_arr} order by $asc_name $asc_type limit $page_sum,$size";
 		}else{
 			$str="select a.dish_id,a.dish_name,a.dish_price,a.dish_count,a.dish_state,a.insert_time  from shop_dish a where a.shop_id={$_SESSION['admin_user']['shop_id']} {$where_arr}  order by $asc_name $asc_type limit $page_sum,$size";
 		}
@@ -46,6 +46,30 @@ class System_dish_model extends MY_Model {
         }
        	$type_list=$this->get_dish_type();
 		return array("where_arr"=>$where_arr,"type_id"=>$type_id,"asc_name"=>$asc_name,"asc_type"=>$asc_type,"page"=>$page,"totalPage"=>$totalPage,"count"=>$count,"page_sum"=>$page_sum,"size"=>$size,"dish_list"=>$dish_list,"type_list"=>$type_list['type_list']);
+	}
+	function dish_list_all ($where_arr,$type_id,$asc_name,$asc_type) {
+		if($type_id!="" && $type_id!=-1){
+			$str="select a.dish_id,a.dish_name,a.dish_price,a.dish_count,a.dish_state,a.insert_time  from shop_dish a where a.dish_id in (select b.dish_id from shop_dish_type_log b where  b.log_type=0 and b.shop_id={$_SESSION['admin_user']['shop_id']} and b.type_id={$type_id}) {$where_arr}";
+		}else{
+			$str="select a.dish_id,a.dish_name,a.dish_price,a.dish_count,a.dish_state,a.insert_time  from shop_dish a where a.shop_id={$_SESSION['admin_user']['shop_id']} {$where_arr}";
+		}
+		$dish_list=$this->select_all($str);
+		$list=$dish_list;
+		$num=0;
+		foreach ($list as $row){
+			$dish_id=$row['dish_id'];
+			//根据菜品id查询菜品所属分类信息
+			$str="select b.type_name from shop_dish_type_log a,shop_dish_type b where  a.type_id=b.type_id and a.log_type=0 and a.dish_id=$dish_id";
+			$arr=$this->select_all($str);
+			$type_name="";
+			foreach ($arr as $row_1){
+				$type_name.=$row_1['type_name']."、";
+			}
+			$dish_list[$num]['type_name']=substr($type_name,0,strlen($type_name)-3);
+			$num++;
+		}
+		$type_list=$this->get_dish_type();
+		return array("where_arr"=>$where_arr,"type_id"=>$type_id,"asc_name"=>$asc_name,"asc_type"=>$asc_type,"dish_list"=>$dish_list,"type_list"=>$type_list['type_list']);
 	}
 	//查找单个菜品信息
 	function get_dish($dish_id){

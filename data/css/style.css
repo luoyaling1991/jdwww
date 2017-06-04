@@ -1531,7 +1531,7 @@ table.dataTable thead .sorting_desc:after {
 }
 table.dataTable thead .sorting:after {
   content: "\f0dc";
-  float: right;
+  float: left;
   font-family: fontawesome;
   color: rgba(50, 50, 50, 0.5);
 }
@@ -3132,7 +3132,7 @@ body.body-small .footer.fixed {
 .table > tfoot > tr > td {
   border-top: 1px solid #e7eaec;
   line-height: 1.42857;
-  padding: 8px 2px;
+  padding: 8px;
   vertical-align: top;
 }
 /* PANELS */

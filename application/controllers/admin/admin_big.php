@@ -14,12 +14,12 @@ class Admin_big extends MY_Controller {
 		$type_list=array();
 		$big_list=array();
 		$type_list=$this->system_big_model->type_list();
-		if(count($type_list)>0){
+		/*if(count($type_list)>0){
 			$big_list=$this->system_big_model->big_list($type_list['0']['type_id']);
 			$data['type_id']=$type_list['0']['type_id'];
-		}
-		$data['type_list']=$type_list;
-		$data['big_list']=$big_list;
+		}*/
+		$data['type_list']=$this->JSON($type_list);
+		/*$data['big_list']= $this->JSON($big_list);*/
 		$this->load->view('base/recommend/list',$data);
 	}
 	//搜索推荐位
@@ -42,19 +42,7 @@ class Admin_big extends MY_Controller {
 	}
 	public function big_add(){
 		$bl=$this->system_big_model->big_add();
-		if($bl){
-			$dish_type_id=$_POST['dish_type_id'];
-			$type_list=array();
-			$big_list=array();
-			$type_list=$this->system_big_model->type_list();
-			$big_list=$this->system_big_model->big_list($dish_type_id);
-			$data['type']=$type_list['0'];
-			$data['type_list']=$type_list;
-			$data['big_list']=$big_list;
-			$this->load->view('base/recommend/list',$data);
-		}else{
-			echo "<script>alert('操作执行失败，请重试!');history.go(-1);</script>";
-		}
+		echo $bl;
 	}
 	//推荐排序
 	public function big_sort(){
@@ -79,11 +67,13 @@ class Admin_big extends MY_Controller {
 		$type_list=array();
 		$big_list=array();
 		$type_list=$this->system_big_model->type_list();
-		$big_list=$this->system_big_model->big_list($type_id);
-		$data['type']=$type_list['0'];
+		//$big_list=$this->system_big_model->big_list($type_id);
+		//$data['type']= $this->JSON($type_list['0']);
 		$data['type_list']=$type_list;
-		$data['big_list']=$big_list;
-		$this->load->view('base/recommend/list',$data);
+		//$data['big_list']=$this->JSON($big_list);
+		$data = $this->JSON($data);
+		// $this->load->view('base/recommend/list',$data);
+		echo $data;
 	}
 	//批量操作
 	public function big_batch(){
@@ -96,15 +86,17 @@ class Admin_big extends MY_Controller {
 			$this->util_model->batch_do($tab_name,$tab_id_name,$tab_id,$state_name,$batch_value);
 		}
 		
-		$type_id=$_POST['type_id'];
+		//$type_id=$_POST['type_id'];
 		$type_list=array();
-		$big_list=array();
+		//$big_list=array();
 		$type_list=$this->system_big_model->type_list();
-		$big_list=$this->system_big_model->big_list($type_id);
-		$data['type']=$type_list['0'];
+		//$big_list=$this->system_big_model->big_list($type_id);
+		//$data['type']=$type_list['0'];
 		$data['type_list']=$type_list;
-		$data['big_list']=$big_list;
-		$this->load->view('base/recommend/list',$data);
+		//$data['big_list']=$big_list;
+		$data = $this->JSON($data);
+		//$this->load->view('base/recommend/list',$data);
+		echo $data;
 	}
 	//删除
 	public function big_delete(){
@@ -115,13 +107,15 @@ class Admin_big extends MY_Controller {
 		
 		$type_id=$_GET['type_id'];
 		$type_list=array();
-		$big_list=array();
+		//$big_list=array();
 		$type_list=$this->system_big_model->type_list();
-		$big_list=$this->system_big_model->big_list($type_id);
-		$data['type']=$type_list['0'];
+		//$big_list=$this->system_big_model->big_list($type_id);
+		//$data['type']=$type_list['0'];
 		$data['type_list']=$type_list;
-		$data['big_list']=$big_list;
-		$this->load->view('base/recommend/list',$data);
+		//$data['big_list']=$big_list;
+		//$this->load->view('base/recommend/list',$data);
+		$data = $this->JSON($data);
+		echo $data;
 	}
 	//编辑推荐信息
 	public function big_update_show(){
@@ -131,19 +125,7 @@ class Admin_big extends MY_Controller {
 	}
 	public function big_upd(){
 		$bl=$this->system_big_model->big_upd();
-		if($bl){
-			$dish_type_id=$_POST['dish_type_id'];
-			$type_list=array();
-			$big_list=array();
-			$type_list=$this->system_big_model->type_list();
-			$big_list=$this->system_big_model->big_list($dish_type_id);
-			$data['type']=$type_list['0'];
-			$data['type_list']=$type_list;
-			$data['big_list']=$big_list;
-			$this->load->view('base/recommend/list',$data);
-		}else{
-			echo "<script>alert('操作执行失败，请重试!');history.go(-1);</script>";
-		}
+		echo $bl;
 	}
 	
 }

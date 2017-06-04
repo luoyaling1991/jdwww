@@ -94,8 +94,8 @@ class Admin_dish extends MY_Controller {
 				$this->util_model->batch_do_3("shop_big_show","data_id",'1',$tab_id);
 			}
 		}
-		
-		
+
+
 		$this->dish_list();
 	}
 	//发布菜品
@@ -105,7 +105,8 @@ class Admin_dish extends MY_Controller {
 	}
 	public function dish_add(){
 		$bl=$this->system_dish_model->dish_add();
-		if((int)$bl==-1){
+		echo $bl;
+		/*if((int)$bl==-1){
 			echo "<script>alert('已存在同名的菜品，请核实!');history.go(-1);</script>";
 		}else{
 			if($bl){
@@ -113,7 +114,7 @@ class Admin_dish extends MY_Controller {
 			}else{
 				echo "<script>alert('操作执行失败，请重试!');history.go(-1);</script>";
 			}
-		}
+		}*/
 		
 	}
 	//新建分类信息
@@ -133,9 +134,13 @@ class Admin_dish extends MY_Controller {
 		$this->load->view('base/dishes/addOrEdit',$data);
 	}
 	public function dish_update(){
-	$bl=$this->system_dish_model->dish_upd();
-		if((int)$bl==-1){
-			echo "<script>alert('已存在同名的菜品，请核实!');history.go(-1);</script>";
+		$bl=$this->system_dish_model->dish_upd();
+		echo $bl;
+		/*if((int)$bl==-1){
+			echo "<script>alert('已存在同名的菜品，请核实!');</script>";
+			$dish_id=$_POST['dish_id'];
+			$data=$this->system_dish_model->get_dish($dish_id);
+			$this->load->view('base/dishes/addOrEdit',$data);
 		}else{
 			if($bl){
 				$this->dish_list();
@@ -145,7 +150,7 @@ class Admin_dish extends MY_Controller {
 				$data=$this->system_dish_model->get_dish($dish_id);
 				$this->load->view('base/dishes/addOrEdit',$data);
 			}
-		}
+		}*/
 	}
 	//删除菜品
 	public function dish_delete(){

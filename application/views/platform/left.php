@@ -10,7 +10,7 @@
             <li>
                 <a><i class="fa fa-table"></i> <span class="nav-label">日程管理</span> <span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
-                    <li><a href="javascript:void(0);" onclick="setContentUrl('<?php echo site_url('admin/admin_dish/dish_list')?>')">品类管理</a>
+                    <li><a href="javascript:void(0);" onclick="setContentUrl('<?php echo site_url('admin/admin_dish_set/dish_set_list')?>')">品类管理</a>
                     </li>
                     <li><a href="javascript:void(0);" onclick="setContentUrl('<?php echo site_url('admin/admin_type/type_list')?>')">品种分类</a>
                     </li>

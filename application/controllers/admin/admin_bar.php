@@ -33,9 +33,10 @@ class Admin_bar extends MY_Controller {
 		$ss=&$_POST['ss'];//实收
 		$bz=&$_POST['bz'];//备注
 		$yy=&$_POST['yy'];//原因
-		$data=$this->admin_bar_model->order_checkout($table_id,$zk,$ss,$bz,$yy);
+		$flag=&$_POST['flag'];//是否清桌
+		$data=$this->admin_bar_model->order_checkout($table_id,$zk,$ss,$bz,$yy,$flag);
 		//$data=$this->admin_bar_model->get_bar();
-		//$data=$this->JSON($data);
+		$data=$this->JSON($data);
 		echo $data;
 	}
 	//修改餐桌状态
@@ -61,9 +62,9 @@ class Admin_bar extends MY_Controller {
 	public function del_log(){
 		$log_id=&$_POST['log_id'];
 		$this->admin_bar_model->del_log($log_id);
-		$data=$this->admin_bar_model->get_bar();
-		$data=$this->JSON($data);
-		echo $data;
+		//$data=$this->admin_bar_model->get_bar();
+		//$data=$this->JSON($data);
+		echo 0;
 		//$this->load->view('bar/index',$data);
 
 	}

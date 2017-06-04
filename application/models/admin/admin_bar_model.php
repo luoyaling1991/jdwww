@@ -108,7 +108,7 @@ class Admin_bar_model extends MY_Model {
 		$this->db->where('tab_id',$tab_id)->update('shop_table',$table);
 	}
 	//结账
-	function order_checkout($table_id,$zk,$ss,$bz,$yy){
+	function order_checkout($table_id,$zk,$ss,$bz,$yy,$flag){
 		if(strlen($yy)>0){
 			$yy=substr($yy,0,strlen($yy)-1);
 		}
@@ -133,7 +133,6 @@ class Admin_bar_model extends MY_Model {
 							'order_1' =>$zk,
 							'order_2' =>$zk+$ss,
 							'order_price' =>$ss,
-							'order_by'=>$yy,
 							'order_desc'=>$bz,
 							'order_state'=>2,
 							'order_time'=>$time
@@ -148,20 +147,27 @@ class Admin_bar_model extends MY_Model {
 					//追单结账
 					$this->db->where('order_id',$order_id)->update('shop_order',$order);
 				}
-				$table= array(
-						'tab_state' =>1
-				);
-				$str="update  sys_shop set order_count=order_count+1,money_count=money_count+{$ss} where shop_id=".$_SESSION['admin_user']['shop_id'];
-				mysql_query($str);
-				//餐桌还原
-				$this->db->where('tab_id',$table_id)->update('shop_table',$table);
-				return "0";
+
 			}
 		}
-			
+		$str="update  sys_shop set order_count=order_count+1,money_count=money_count+{$ss} where shop_id=".$_SESSION['admin_user']['shop_id'];
+		mysql_query($str);
+		$table= array(
+			'tab_state' =>1
+		);
+		if ($flag == 'true'){
+			//餐桌还原
+			$this->db->where('tab_id',$table_id)->update('shop_table',$table);
+		}
+		return "0";
 	}
 	function del_log($log_id){
 		$this->db->where(array('log_id'=>$log_id))->delete('shop_order_log');
+	}
+	function get_log_by_order($order_id){
+		$str="select log_id,log_name,log_price,log_count,log_money from shop_order_log where order_id=$order_id";
+		$order['log_list']=$this->select_all($str);
+		return $order;
 	}
 }
 

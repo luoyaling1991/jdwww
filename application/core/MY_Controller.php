@@ -37,18 +37,21 @@ class MY_Controller extends CI_Controller  {
 		if (++$recursive_counter > 1000) {
 			die('possible deep recursion attack');
 		}
-		foreach ($array as $key => $value) {
-			if (is_array($value)) {
-				$this->arrayRecursive($array[$key], $function, $apply_to_keys_also);
-			} else {
-				$array[$key] = $function($value);
-			}
-	
-			if ($apply_to_keys_also && is_string($key)) {
-				$new_key = $function($key);
-				if ($new_key != $key) {
-					$array[$new_key] = $array[$key];
-					unset($array[$key]);
+		if(is_array($array) && !empty($array)) {
+
+			foreach ($array as $key => $value) {
+				if (is_array($value)) {
+					$this->arrayRecursive($array[$key], $function, $apply_to_keys_also);
+				} else {
+					$array[$key] = $function($value);
+				}
+
+				if ($apply_to_keys_also && is_string($key)) {
+					$new_key = $function($key);
+					if ($new_key != $key) {
+						$array[$new_key] = $array[$key];
+						unset($array[$key]);
+					}
 				}
 			}
 		}
@@ -58,6 +61,11 @@ class MY_Controller extends CI_Controller  {
 		$this->arrayRecursive($array, 'urlencode', true);
 		$json = json_encode($array);
 		return urldecode($json);
+	}
+	function sort_by_time($row1,$row2){
+		$t1 = strtotime($row1['insert_time']);
+		$t2 = strtotime($row2['insert_time']);
+		return $t1 - $t2;
 	}
 	
 	

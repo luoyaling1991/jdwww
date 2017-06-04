@@ -10,7 +10,16 @@ class System_big_model extends MY_Model {
 	public function type_list(){
 		$res = $this->db->select('type_id,type_name')->where('shop_id',$_SESSION['admin_user']['shop_id'])->order_by('type_asc','desc')->get('shop_dish_type');
 		$type_list = $res->result_array();
-		return $type_list;
+		$type_list_1 = array();
+		if(count($type_list)>0){
+			foreach($type_list as $row){
+				$type_id = $row['type_id'];
+				$big_list = $this->big_list($type_id);
+				$row['big_list'] = $big_list;
+				$type_list_1[] = $row;
+			}
+		}
+		return $type_list_1;
 	}
 	//查询推荐位信息
 	public function big_list($type_id){
@@ -54,11 +63,11 @@ class System_big_model extends MY_Model {
 		$data_id=$big['data_id'];
 		if($show_type==1){
 			$res = $this->db->select('dish_name,dish_price,dish_old_price,dish_img_6')->where('dish_id',$data_id)->get('shop_dish');
-        		$one= $res->row_array();
-        		$big['show_name']=$one['dish_name'];
-        		$big['dish_price']=$one['dish_price'];
-        		$big['dish_old_price']=$one['dish_old_price'];
-        		$big['dish_img_6']=$one['dish_img_6'];
+			$one= $res->row_array();
+			$big['show_name']=$one['dish_name'];
+			$big['dish_price']=$one['dish_price'];
+			$big['dish_old_price']=$one['dish_old_price'];
+			$big['show_img']=$one['dish_img_6'];
 		}
 		if($show_type==2){
 			$res = $this->db->select('set_name')->where('set_id',$data_id)->get('shop_set');
@@ -103,7 +112,7 @@ class System_big_model extends MY_Model {
 			
 		}else if($show_type==1){
 			//推荐菜品信息
-			$this->data_id=$this->input->post('dish_id');
+			$this->data_id=$this->input->post('data_id');
 			$show_img=$this->input->post('big_img_1_value');
 			$dish_price=$this->input->post('dish_price');
 			//先更新推荐菜品的基本
@@ -114,7 +123,7 @@ class System_big_model extends MY_Model {
 			$this->db->where('dish_id',$this->data_id)->update('shop_dish',$dish_upd);
 		}else if($show_type==2){
 			//推荐套餐信息
-			$this->data_id=$this->input->post('set_id');
+			$this->data_id=$this->input->post('data_id');
 		}
 		$bl=$this->db->insert('shop_big_show', $this);
 		return $bl;
@@ -126,7 +135,6 @@ class System_big_model extends MY_Model {
 		$this->show_type=$show_type;
 		$this->insert_time=date("Y-m-d H:i:s",time());
 		$this->show_state=$this->input->post('show_state');
-	
 		if($show_type==0){
 			//推荐活动信息
 			$this->show_name=$this->input->post('show_name');
@@ -135,7 +143,7 @@ class System_big_model extends MY_Model {
 				
 		}else if($show_type==1){
 			//推荐菜品信息
-			$this->data_id=$this->input->post('dish_id');
+			$this->data_id=$this->input->post('data_id');
 			$show_img=$this->input->post('big_img_1_value');
 			$dish_price=$this->input->post('dish_price');
 			//先更新推荐菜品的基本
@@ -146,8 +154,9 @@ class System_big_model extends MY_Model {
 			$this->db->where('dish_id',$this->data_id)->update('shop_dish',$dish_upd);
 		}else if($show_type==2){
 			//推荐套餐信息
-			$this->data_id=$this->input->post('set_id');
+			$this->data_id=$this->input->post('data_id');
 		}
+
 		$bl = $this->db->where('show_id',$this->input->post('show_id'))->update('shop_big_show',$this);
 		return $bl;
 	}

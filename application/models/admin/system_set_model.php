@@ -60,7 +60,42 @@ class System_set_model extends MY_Model {
 		$type_list=$this->get_dish_type();
 		return array("where_arr"=>$where_arr,"type_id"=>$type_id,"asc_name"=>$asc_name,"asc_type"=>$asc_type,"page"=>$page,"totalPage"=>$totalPage,"set_list"=>$set_list,"type_list"=>$type_list['type_list']);
 	}
-	
+	function set_list_all($where_arr,$type_id,$asc_name,$asc_type) {
+		if($type_id!="" && $type_id!=-1){
+			$str="select a.set_id,a.set_name,a.set_price,a.set_count,a.set_state,a.insert_time  from shop_set a where a.set_id in (select b.dish_id from shop_dish_type_log b where  b.log_type=1 and b.shop_id={$_SESSION['admin_user']['shop_id']} and b.type_id={$type_id}) {$where_arr}";
+		}else{
+			$str="select a.set_id,a.set_name,a.set_price,a.set_count,a.set_state,a.insert_time  from shop_set a where a.shop_id={$_SESSION['admin_user']['shop_id']} {$where_arr}";
+		}
+		$set_list=$this->select_all($str);
+		$list_1=$set_list;
+		$list_2=$set_list;
+		$num=0;
+		//查询所属分类
+		foreach ($list_1 as $row){
+			$dish_id=$row['set_id'];
+			//根据菜品id查询菜品所属分类信息
+			$str="select b.type_name from shop_dish_type_log a,shop_dish_type b where  a.type_id=b.type_id and a.log_type=1 and a.dish_id=$dish_id";
+			$arr=$this->select_all($str);
+			$type_name="";
+			foreach ($arr as $row_1){
+				$type_name.=$row_1['type_name']."、";
+			}
+			$set_list[$num]['type_name']=substr($type_name,0,strlen($type_name)-3);
+			$num++;
+		}
+		//查询所属菜品
+		$num=0;
+		foreach ($list_1 as $row){
+			$set_id=$row['set_id'];
+			//查询菜品的信息
+			$str="select a.dish_name,a.dish_price,b.count from shop_dish a,shop_set_log b where a.dish_id=b.dish_id and b.set_id={$set_id} order by b.sort ";
+			$dish_list=$this->select_all($str);
+			$set_list[$num]['dish_list']=$dish_list;
+			$num++;
+		}
+		$type_list=$this->get_dish_type();
+		return array("where_arr"=>$where_arr,"type_id"=>$type_id,"asc_name"=>$asc_name,"asc_type"=>$asc_type,"set_list"=>$set_list,"type_list"=>$type_list['type_list']);
+	}
 	//查找所有菜品分类信息
 	function get_dish_type(){
 		$res = $this->db->select('*')->where('shop_id',$_SESSION['admin_user']['shop_id'])->order_by('type_asc','desc')->get('shop_dish_type');
@@ -72,6 +107,10 @@ class System_set_model extends MY_Model {
 		//查询基本信息
 		$res = $this->db->select('*')->where('set_id',$set_id)->get('shop_set');
 		$set= $res->row_array();
+		$images = array();
+		array_push($images, $set['set_img']);
+		array_push($images, $set['set_img_big']);
+		$set['images'] = $images;
 		$res = $this->db->select('type_id')->where(array('dish_id'=>$set_id,'log_type'=>1))->get('shop_dish_type_log');
 		$type_id_list= $res->result_array();
 		$type_id=array();
@@ -116,7 +155,7 @@ class System_set_model extends MY_Model {
 		$this->set_img_big       = $this->input->post('value_2');
 		$this->set_state       = $this->input->post('set_state');
 		$this->insert_time       =date("Y-m-d H:i:s",time());
-		$str="select * from shop_set where shop_id=".$this->shop_id." and set_name='".$this->set_name."' and set_id!=".$set_id;
+		$str="select * from shop_set where shop_id=".$this->shop_id." and set_name='".$this->set_name."' and set_id !=".$set_id;
 		$name_list= $this->select_all($str);
 		if(count($name_list)>0){
 			return "-1";
