@@ -31,7 +31,11 @@ class Util_model extends MY_Model {
 
 	}
 	/*批量启用/停用/删除
-	 * $tab_name要操作的表名   $tab_id_name要操作的id列名  $tab_id要操作存储的id数组  $state_name要操作的状态列名 $batch_value要操作的状态值
+	 * $tab_name要操作的表名
+	 * $tab_id_name要操作的id列名
+	 * $tab_id要操作存储的id数组
+	 * $state_name要操作的状态列名
+	 * $batch_value要操作的状态值
 	 * -1为批量删除
 	 * 1为批量启用
 	 * 0为批量暂停

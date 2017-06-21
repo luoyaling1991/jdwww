@@ -14,7 +14,7 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://jdmenu.com/cooksystem/';
+$config['base_url']	= 'http://www.zyfb.com/cooksystem/';
 /*
 |--------------------------------------------------------------------------
 | Index File
