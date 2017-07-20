@@ -33,7 +33,7 @@ class Admin_print extends CI_Controller {
 			$data['print_type']=base_url("data/print_type_01.docx");
 		}
 		$data['other']=$info['other'];
-		$this->load->view('admin/print_test',$data);
+		$this->load->view('print/print_test',$data);
 	}
 	
 	public function print_one_do(){
