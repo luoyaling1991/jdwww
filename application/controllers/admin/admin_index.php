@@ -43,18 +43,27 @@ class Admin_index extends CI_Controller {
 	}
 	public function check_login(){
 		if(isset($_SESSION['admin_user'])){
-			$data_one=$this->admin_shop_model->get_sum();
-			if($data_one['one']['yz_03']==1 || $data_one['one']['yz_04']==1 ){
-				// 获取用户基本信息
-				$this->load->view('platform/index');
-			}else{
-				//获取基本信息
-				$data_list=$this->admin_bar_model->get_bar();
-				$type_list=$this->JSON($data_list['type_list']);
-				$order_no_list=$this->JSON($data_list['order_no_list']);
-				$data['type_list']=$type_list;
-				$data['order_no_list']=$order_no_list;
-				$this->load->view('bar/index',$data);
+			if (isset($_SESSION['waiter'])) {
+				$data_one=$this->admin_shop_model->get_sum();
+				if($data_one['one']['yz_03']==1 || $data_one['one']['yz_04']==1 ){
+					// 获取用户基本信息
+					$this->load->view('platform/index');
+				}else{
+					if (in_array('6',$_SESSION['waiter']['waiter_jurisdiction'])){
+						//获取基本信息
+						$data_list=$this->admin_bar_model->get_bar();
+						$type_list=$this->JSON($data_list['type_list']);
+						$order_no_list=$this->JSON($data_list['order_no_list']);
+						$data['type_list']=$type_list;
+						$data['order_no_list']=$order_no_list;
+						$this->load->view('bar/index',$data);
+					}else {
+						$this->load->view('platform/index');
+					}
+				}
+			} else {
+				//如果员工未登陆，需要登陆
+				$this->load->view('account/waiterLogin');
 			}
 		}else{
 			redirect('admin/admin_login/index');
@@ -62,7 +71,12 @@ class Admin_index extends CI_Controller {
 	}
     public function system(){
     	if(isset($_SESSION['admin_user'])){
-    		$this->load->view('platform/index');
+			if (isset($_SESSION['waiter'])) {
+				$this->load->view('platform/index');
+			}else {
+				//如果员工未登陆，需要登陆
+				$this->load->view('account/waiterLogin');
+			}
     	}else{
     		redirect('admin/admin_login/index');
     	}
@@ -77,7 +91,13 @@ class Admin_index extends CI_Controller {
 		$data=$this->admin_shop_model->get_sum();
 		$this->load->view('account/info',$data);
 	}
-	
+
+	/**
+	 * 员工登陆
+	 */
+	public function user_login() {
+		echo $this->admin_shop_model->user_login();
+	}
 
 	
 	function arrayRecursive(&$array, $function, $apply_to_keys_also = false)

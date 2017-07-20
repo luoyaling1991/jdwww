@@ -18,31 +18,36 @@
                     </li>
                     <li><a href="javascript:void(0);" onclick="setContentUrl('<?php echo site_url('admin/admin_table/table_list')?>')">餐桌管理</a>
                     </li>
-                    <li><a href="javascript:void(0);" onclick="setContentUrl('<?php echo site_url("admin/admin_waiter/waiter_list")?>')">工号管理</a>
+                    <li><a href="javascript:void(0);" onclick="setContentUrl('<?php
+                        if($_SESSION['admin_user']['two']!=1 || ($_SESSION['admin_user']['two']==1 && $_SESSION['admin_user']['is_check']==1) ){
+                            echo site_url("admin/admin_waiter/waiter_list");}
+                        else{
+                            echo site_url('admin/admin_two/show_two_1');
+                        } ?>')">工号管理</a>
                     </li>
                     <li><a href="javascript:void(0);" onclick="setContentUrl('<?php echo site_url("admin/admin_sell/set_show")?>')">参数配置</a>
                     </li>
                 </ul>
             </li>
-            <li>
+            <li id="bus_tab">
                 <a ><i class="fa fa-bar-chart-o"></i> <span class="nav-label">营业数据</span> <span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li><a href="javascript:void(0);" onclick="setContentUrl('<?php
-                        if($_SESSION['admin_user']['two']!=1 || ($_SESSION['admin_user']['two']==1 && $_SESSION['admin_user']['is_check']==1) ){
+                        if($_SESSION['admin_user']['two']!=1 || ($_SESSION['admin_user']['two']==1 && $_SESSION['admin_user']['is_check']==1) || in_array('5',$_SESSION['waiter']['waiter_jurisdiction'])){
                             echo site_url('admin/admin_sell/index_1');}
                         else{
                             echo site_url('admin/admin_two/show_two_1');
                         }?>')">营业状况</a>
                     </li>
                     <li><a href="javascript:void(0);" onclick="setContentUrl('<?php
-                        if($_SESSION['admin_user']['two']!=1 || ($_SESSION['admin_user']['two']==1 && $_SESSION['admin_user']['is_check']==1) ){
+                        if($_SESSION['admin_user']['two']!=1 || ($_SESSION['admin_user']['two']==1 && $_SESSION['admin_user']['is_check']==1) || in_array('5',$_SESSION['waiter']['waiter_jurisdiction'])){
                             echo site_url('admin/admin_sell/index_2');}
                         else{
                             echo site_url('admin/admin_two/show_two_1');
                         }?>')">热销查询</a>
                     </li>
                     <li><a href="javascript:void(0);" onclick="setContentUrl('<?php
-                        if($_SESSION['admin_user']['two']!=1 || ($_SESSION['admin_user']['two']==1 && $_SESSION['admin_user']['is_check']==1) ){
+                        if($_SESSION['admin_user']['two']!=1 || ($_SESSION['admin_user']['two']==1 && $_SESSION['admin_user']['is_check']==1) || in_array('5',$_SESSION['waiter']['waiter_jurisdiction'])){
                             echo site_url('admin/admin_sell/index_3');}
                         else{
                             echo site_url('admin/admin_two/show_two_1');
@@ -68,7 +73,7 @@
                         } ?>')">APP密码</a>
                     </li>
                     <li><a href="javascript:void(0);" onclick="setContentUrl('<?php
-                        if($_SESSION['admin_user']['two']!=1 || ($_SESSION['admin_user']['two']==1 && $_SESSION['admin_user']['is_check']==1) ){
+                        if($_SESSION['admin_user']['two']!=1 || ($_SESSION['admin_user']['two']==1 && $_SESSION['admin_user']['is_check']==1)){
                             echo site_url('admin/admin_pwd/index');}
                         else{
                             echo site_url('admin/admin_two/show_two_1');

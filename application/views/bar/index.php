@@ -566,9 +566,11 @@
                         if (tab_state == 2) {
                             var sub_order_money = 0;
                             var sub_order_count = 0;
+                            var waiter_logs_str= "";
                             $.each(order_list, function (i, order) {
                                 var sub_log_money = 0;
                                 var sub_log_count = 0;
+                                var waiter_logs = order['waiter_logs'];
                                 if (order['order_type'] == 0) {
                                     order_now_num++;
                                     if (order_now_num < 10) {
@@ -648,7 +650,17 @@
                                 }
                                 order_money = main_log_money + sub_order_money;
                                 order_count = main_log_count + sub_order_count;
+                                $.each(waiter_logs,function(index,value) {
+                                    waiter_logs_str +="<div class='do-time'>" +
+                                                    "<h4>"+value['i_time']+"<br>工号"+value['waiter_no']+"</h4>" +
+                                                    "<div class='do-detail'>" +
+                                                    "<div class='do-part'>" +
+                                                   /* "<h5>创建订单</h5>" +*/
+                                                    " <p>"+value['log_desc']+"</p>" +
+                                                    "</div>";
+                                });
                             });
+
                             if ($("#order_" + main_order_id).length <= 0) {
                                 $("#wrapper").append("<div class='modal inmodal' id='order_" + main_order_id + "' tabindex='-1' role='dialog'  aria-hidden='true'>" +
                                 "<div class='modal-dialog' style='width: 1000px;'>" +
@@ -730,8 +742,8 @@
                                 "</div>" +
 
                                 "<div class='modal-footer' style='text-align: left;'>" +
-                                "<button type='button' class='btn btn-primary' onclick='ajax_submit(&quot;" + tab_id + "&quot;,&quot;flase&quot;);'>仅结账</button>" +
-                                "<button type='button' class='btn btn-primary' onclick='ajax_submit(&quot;" + tab_id + "&quot;,&quot;true&quot;);'>结账/清桌</button>" +
+                                "<button type='button' class='btn btn-primary' onclick='ajax_submit(&quot;"+main_order_id+"&quot;,&quot;" + tab_id + "&quot;,&quot;flase&quot;);'>仅结账</button>" +
+                                "<button type='button' class='btn btn-primary' onclick='ajax_submit(&quot;"+main_order_id+"&quot;,&quot;" + tab_id + "&quot;,&quot;true&quot;);'>结账/清桌</button>" +
                                 "<button type='button' class='btn btn-white' data-dismiss='modal' style='float: right;'>关闭</button>" +
 
                                 "</div>" +
@@ -743,42 +755,7 @@
 
                                 "</div>" +
                                 "<div class='modal-body' style='background: #fff;'>" +
-                                "<div class='do-time'>" +
-                                "<h4>12:22:22<br>工号001</h4>" +
-                                "<div class='do-detail'>" +
-                                "<div class='do-part'>" +
-                                "<h5>创建订单</h5>" +
-                                " <p>一二三四五六起吧</p>" +
-
-                                "</div>" +
-                                "<div class='do-part'>" +
-                                "<h5>创建订单</h5>" +
-                                "<p>一二三四五六起吧</p>" +
-                                "<p>一二三四五六起吧</p>" +
-                                "<p>一二三四五六起吧</p>" +
-                                "<p>一二三四五六起吧</p>" +
-
-                                "</div>" +
-                                "</div>" +
-                                "<div style='clear: both;'></div>" +
-                                "</div>" +
-                                "<div class='do-time'>" +
-                                "<h4>12:22:22<br>工号001</h4>" +
-                                "<div class='do-part'>" +
-
-                                "<h5>创建订单</h5>" +
-                                "<p>一二三四五六起吧</p>" +
-
-                                "</div>" +
-                                "<div style='clear: both;'></div>" +
-                                "</div>" +
-                                "<div class='do-time'>" +
-                                "<h4>12:22:22<br>工号001</h4>" +
-                                "<div class='do-part'>" +
-                                "<h5>创建订单</h5>" +
-                                "<p>一二三四五六起吧</p>" +
-                                "</div>" +
-                                "<div style='clear: both;'></div>" +
+                                waiter_logs_str+
                                 "</div>" +
                                 "</div>" +
                                 "</div>" +
@@ -800,7 +777,7 @@
                 $.ajax({
                     url:'<?php echo site_url("admin/admin_bar/del_log")?>',
                     type: "POST",
-                    data:{log_id:do_log_id},
+                    data:{log_id:do_log_id,order_id:do_order_no},
                     success: function(data,status){//如果调用php成功
                         if (data == "0"){
                             var order_count = Number($(".tab_order_count_"+do_tab_id).eq(0).text().replace('份',''));
@@ -1007,7 +984,7 @@
             }
         }
         // 结账并清桌
-        function ajax_submit(sub_tab_id,flag){
+        function ajax_submit(order_id,sub_tab_id,flag){
             //先获取折扣实收
             var zk_1=$("#zk_"+sub_tab_id).val();
             var ss_1=$("#ss_"+sub_tab_id).val();
@@ -1024,7 +1001,6 @@
                     return false;
                 }else{
                     var v="";
-                    console.log($("#xiaopiao_"+sub_tab_id).is(':checked'));
                     if($("#xiaopiao_"+sub_tab_id).attr('checked') == 'checked'){
                         v=print_jz(sub_tab_id,ss_1);
                     }else{
@@ -1035,7 +1011,7 @@
                     $.ajax({
                         url:'<?php echo site_url("admin/admin_bar/order_checkout")?>',
                         type: "POST",
-                        data:{table_id:sub_tab_id,zk:zk_1,ss:ss_1,bz:bz,flag:flag},
+                        data:{order_id:order_id,table_id:sub_tab_id,zk:zk_1,ss:ss_1,bz:bz,flag:flag},
                         dataType: "json",
                         error: function(){
                             //alert('系统故障，请联系我们的客户人员！');
@@ -1058,11 +1034,11 @@
             }
         }
         // 清桌
-        function clear_table(sub_tab_id,type_id){
+        function clear_table(order_id,sub_tab_id,type_id){
             $.ajax({
             url:'<?php echo site_url("admin/admin_bar/upd_tab")?>',
             type: "POST",
-            data:{t_id:sub_tab_id,tab_state:1},
+            data:{order_id:order_id,t_id:sub_tab_id,tab_state:1},
             dataType: "json",
             error: function(){
                 //alert('系统故障，请联系我们的客户人员！');

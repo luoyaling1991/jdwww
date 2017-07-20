@@ -127,9 +127,9 @@
                     show_text = "套餐推荐";
                 }
                 if (show_state == 0){
-                    state_text = '<span style="color:red;">暂停</span>';
+                    state_text = '<span style="color:#F00;">暂停</span>';
                 }else if (show_state == 1){
-                    state_text = '<span style="color:green;">启用</span>';
+                    state_text = '<span style="color:#5BB04B;">启用</span>';
                 }
                 var num_1 = 0;
                 var num_2 = 0;

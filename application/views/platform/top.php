@@ -23,6 +23,8 @@
             <ul class="dropdown-menu">
                 <li><a href="javascript:void(0);" onclick="back();"><i class="fa fa-desktop"></i>&nbsp;&nbsp;吧台管理</a>
                 </li>
+                <li><a href="javascript:void(0);" onclick="waiter_out();"><i class="fa fa-power-off"></i>&nbsp;&nbsp;员工注销</a>
+                </li>
                 <li><a href="javascript:void(0);" onclick="login_out();"><i class="fa fa-power-off"></i>&nbsp;&nbsp;账户注销</a>
                 </li>
             </ul>
@@ -64,6 +66,19 @@
         }
     }
     function back(){
-        top.location="<?php echo site_url('admin/admin_bar/index')?>";
+        var isAuth = "<?php echo in_array('6',$_SESSION['waiter']['waiter_jurisdiction']) ?>";
+        if (isAuth) {
+            top.location="<?php echo site_url('admin/admin_bar/index')?>";
+        }else {
+            alert("你没有吧台管理权限.");
+        }
+
+    }
+    function waiter_out() {
+        if (confirm('确定要注销员工吗？')) {
+            top.location="<?php echo site_url('admin/admin_login/waiter_out')?>";
+        }else {
+            return false;
+        }
     }
 </script>

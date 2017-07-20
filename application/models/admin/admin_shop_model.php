@@ -191,7 +191,7 @@ class Admin_shop_model extends MY_Model {
 		$admin_pwd=$password;
 		$res = $this->db->select('*')->where('reg_num',$admin_name)->get('sys_shop');
 		$result = $res->row_array();
-		
+
 		if(empty($result)){
 			return "-1";//没有找到账户
 		}else{
@@ -207,7 +207,35 @@ class Admin_shop_model extends MY_Model {
 				}else{
 					return "-2";//账户暂停了
 				}
-		
+
+			}else{
+				return "0";//密码不对
+			}
+		}
+	}
+
+	// 员工登陆的方法
+	function user_login() {
+		$waiter_no=$this->input->post('waiter_no');
+		$waiter_pwd=$this->input->post('waiter_pwd');
+		$res = $this->db->select('*')->where(array('shop_id'=>$_SESSION['admin_user']['shop_id'],'waiter_no'=>$waiter_no))->get('shop_waiter');
+		$result = $res->row_array();
+		$waiter_jurisdiction = $result['waiter_jurisdiction'];
+		if (!is_null($waiter_jurisdiction)) {
+			$waiter_jurisdiction_arr = explode(",", $waiter_jurisdiction);
+			$result['waiter_jurisdiction'] = $waiter_jurisdiction_arr;
+		}
+		if(empty($result)){
+			return "-1";//没有找到账户
+		}else{
+			if($this->md5_pwd($waiter_pwd) == $result['waiter_pwd']){
+				if($result['waiter_state']== 1){
+					$_SESSION['waiter']=$result;
+					return "1";//账户和密码验证正确,且账户已启用
+				}else{
+					return "-2";//账户暂停了
+				}
+
 			}else{
 				return "0";//密码不对
 			}

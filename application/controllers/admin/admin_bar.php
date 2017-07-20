@@ -5,6 +5,7 @@ class Admin_bar extends MY_Controller {
 		parent::__construct();
 		$this->load->model('admin/admin_shop_model');
 		$this->load->model('admin/admin_bar_model');
+		$this->load->model('admin/system_log_model');
 		if(!isset($_SESSION)){
 			session_start();
 		}
@@ -34,7 +35,9 @@ class Admin_bar extends MY_Controller {
 		$bz=&$_POST['bz'];//备注
 		$yy=&$_POST['yy'];//原因
 		$flag=&$_POST['flag'];//是否清桌
+		$order_id=&$_POST['order_id'];
 		$data=$this->admin_bar_model->order_checkout($table_id,$zk,$ss,$bz,$yy,$flag);
+		$this->system_log_model->add_log(0,$order_id, "结账",$_SESSION['waiter']['waiter_id']);
 		//$data=$this->admin_bar_model->get_bar();
 		$data=$this->JSON($data);
 		echo $data;
@@ -53,6 +56,19 @@ class Admin_bar extends MY_Controller {
 		$type=&$_POST['type'];
 		$order_id=&$_POST['order_id'];
 		$bl=$this->admin_bar_model->order_do($type,$order_id);
+		$order=$this->admin_bar_model->get_order($order_id);
+		if ($order['order_type'] == '0'){
+			/**
+			 * 新增操作日志
+			 */
+			$this->system_log_model->add_log(0,$order_id, "确认订单",$_SESSION['waiter']['waiter_id']);
+		} else {
+			/**
+			 * 新增操作日志
+			 */
+			$this->system_log_model->add_log(0,$order_id, "确认追单",$_SESSION['waiter']['waiter_id']);
+		}
+
 		$data=$this->admin_bar_model->get_bar();
 		$data['bl']=$bl;
 		$data=$this->JSON($data);
@@ -61,7 +77,13 @@ class Admin_bar extends MY_Controller {
 	//删除其中某个菜品
 	public function del_log(){
 		$log_id=&$_POST['log_id'];
+		$order_id=&$_POST['order_id'];
 		$this->admin_bar_model->del_log($log_id);
+		$order_log = $this->admin_bar_model->get_order_dish($log_id);
+		/**
+		 * 新增操作日志
+		 */
+		$this->system_log_model->add_log(0,$order_id, "删除菜品,"+$order_log['order_log']['log_name'],$_SESSION['waiter']['waiter_id']);
 		//$data=$this->admin_bar_model->get_bar();
 		//$data=$this->JSON($data);
 		echo 0;
@@ -84,6 +106,17 @@ class Admin_bar extends MY_Controller {
 		/*$data=$this->JSON($data);
 		echo $data;*/
 		$this->load->view('bar/index',$data);
+	}
+
+	/**
+	 * 获取订单操作日志
+	 */
+	public function get_order_logs(){
+		$order_id = $_POST['order_id'];
+		$order_type = 0;
+		$data = $this->system_log_model->log_list($order_id, $order_type);
+		$data = $this->JSON($data);
+		echo $data;
 	}
 	
 }

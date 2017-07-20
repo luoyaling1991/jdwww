@@ -106,9 +106,8 @@
 <script src="/data/javascript/plugins/gritter/jquery.gritter.min.js"></script>
 <script src="/data/javascript/jquery.cookie.min.js"></script>
 <script src="/data/javascript/plugins/iCheck/icheck.min.js"></script>
-<!-- Morris -->
-<script src="/data/javascript/plugins/morris/raphael-2.1.0.min.js"></script>
-<script src="/data/javascript/plugins/morris/morris.js"></script>
+<script src="/data/javascript/highcharts.js"></script>
+
 <script src="/data/javascript/plugins/layer/laydate/laydate.js"></script>
 <script src="/data/javascript/plugins/cropper/cropper.js"></script>
 <script type="text/javascript">
@@ -166,6 +165,7 @@
             }
         })
     })
+
 </script>
 </body>
 </html>

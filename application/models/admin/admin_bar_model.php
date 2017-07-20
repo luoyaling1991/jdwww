@@ -76,6 +76,12 @@ class Admin_bar_model extends MY_Model {
 					for ($z=0;$z<count($order_one_list);$z++){
 						$one=$order_one_list[$z];
 						$order_id=$one['order_id'];
+
+						$str="select w.id,w.log_type,w.order_id,w.log_desc,w.i_time,w.waiter_id,s.waiter_no,
+        				s.waiter_name from waiter_log w left join shop_waiter s on w.waiter_id = s.waiter_id
+        				where w.shop_id={$_SESSION['admin_user']['shop_id']} and w.order_id=$order_id and w.log_type=0";
+						$order_one_list[$z]['waiter_logs'] = $this->select_all($str);
+
 						$str="select log_id,log_name,log_price,log_count,log_money from shop_order_log where order_id=$order_id";
 						$order_one_list[$z]['log_list']=$this->select_all($str);
 					}
@@ -168,6 +174,17 @@ class Admin_bar_model extends MY_Model {
 		$str="select log_id,log_name,log_price,log_count,log_money from shop_order_log where order_id=$order_id";
 		$order['log_list']=$this->select_all($str);
 		return $order;
+	}
+
+	function get_order($order_id){
+		$str="select order_type from shop_order where order_id=$order_id";
+		$order['order_type']=$this->select_all($str);
+		return $order;
+	}
+	function get_order_dish($log_id){
+		$str="select * from shop_order_log where log_id=$log_id";
+		$order_log['order_log']=$this->select_all($str);
+		return $order_log;
 	}
 }
 

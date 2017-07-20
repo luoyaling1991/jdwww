@@ -13,6 +13,9 @@ class Admin_login extends CI_Controller {
 		unset($_SESSION['admin_user']);
 		redirect('admin/admin_login');
 	}
-
+	public function waiter_out(){
+		unset($_SESSION['waiter']);
+		$this->load->view('account/waiterLogin');
+	}
 }
 ?>
