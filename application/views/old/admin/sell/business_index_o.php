@@ -553,7 +553,6 @@
         //按sort值从小到大排序
         objectList.sort(function(a,b){
             return b.sum-a.sum});
-
         dish_list=objectList;
         $("#thead").html("");
         $("#tbody").html("");

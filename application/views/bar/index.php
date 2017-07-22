@@ -108,6 +108,8 @@
                     <ul class="dropdown-menu">
                         <li><a href="javascript:void(0);" onclick="toBackstage();"><i class="fa fa-desktop"></i>&nbsp;&nbsp;系统管理</a>
                         </li>
+                        <li><a href="javascript:void(0);" onclick="waiter_out();"><i class="fa fa-power-off"></i>&nbsp;&nbsp;员工注销</a>
+                        </li>
                         <li><a href="javascript:void(0);" onclick="login_out();"><i class="fa fa-power-off"></i>&nbsp;&nbsp;账户注销</a>
                         </li>
                     </ul>
@@ -207,6 +209,7 @@
     <!-- iCheck -->
     <script src="/data/javascript/plugins/iCheck/icheck.min.js"></script>
     <script>
+        var auth_arr =eval(<?php echo $_SESSION['waiter']['waiter_jurisdiction_json'] ?>);
         var type_list=eval(<?php echo $type_list;?>);
         var order_no_list=eval(<?php echo $order_no_list;?>);
         var type_id_value=type_list[0]['type_id'];
@@ -772,6 +775,8 @@
         }
         // 删除预定菜品
         function del_log(do_tab_id,do_order_no,do_log_id){
+            //检验用户是否有删除菜品的权限
+            auth_check('2');
             var result = confirm('您确认要删除该订单菜品吗？');
             if(result){
                 $.ajax({
@@ -805,6 +810,7 @@
         }
         //确认订单
         function order_do(type_value,order_id_value){
+
             $.ajax({
                 url:'<?php echo site_url("admin/admin_bar/order_do")?>',
                 type: "POST",
@@ -985,6 +991,7 @@
         }
         // 结账并清桌
         function ajax_submit(order_id,sub_tab_id,flag){
+            auth_check('3');
             //先获取折扣实收
             var zk_1=$("#zk_"+sub_tab_id).val();
             var ss_1=$("#ss_"+sub_tab_id).val();
@@ -1035,6 +1042,7 @@
         }
         // 清桌
         function clear_table(order_id,sub_tab_id,type_id){
+            auth_check('4');
             $.ajax({
             url:'<?php echo site_url("admin/admin_bar/upd_tab")?>',
             type: "POST",
@@ -1059,6 +1067,20 @@
                 select_tables(type_id);
             }
             });
+        }
+
+        function waiter_out() {
+            if (confirm('确定要注销员工吗？')) {
+                top.location="<?php echo site_url('admin/admin_login/waiter_out')?>";
+            }else {
+                return false;
+            }
+        }
+        function auth_check(auth_id){
+            if ($.inArray(auth_id, auth_arr) == -1){
+                alert('该员工没有权限');
+                return false;
+            }
         }
     </script>
 

@@ -67,7 +67,7 @@ class Admin_table extends MY_Controller {
 		}else{
 			if($bl){
 //				$this->table_list();
-                echo "admin/admin_table/table_list";
+                echo "0";
 			}else{
 //				echo "<script>alert('操作执行失败，请重试!');history.go(-1);</script>";
 				echo "-2";
@@ -140,20 +140,17 @@ class Admin_table extends MY_Controller {
 	public function table_update_show(){
 		$tab_id=$_GET['tab_id'];
 		$data=$this->system_table_model->get_table($tab_id);
-		$this->load->view('admin/table/shop_table_upd',$data);
+		echo $this->JSON($data);
 	}
 	public function table_update(){
 		$bl=$this->system_table_model->table_update();
 		if((int)$bl==-1){
-			echo "<script>alert('已存在同名的餐桌，请核实!');history.go(-1);</script>";
+			echo "-1";
 		}else{
 			if($bl){
-				$type_id=&$_POST['type_id'];
-				$tab_state="";
-				$data=$this->system_table_model->get_table_list($type_id,$tab_state);
-				$this->load->view('base/table/list',$data);
+				echo '0';
 			}else{
-				echo "<script>alert('操作执行失败，请重试!');history.go(-1);</script>";
+				echo "-2";
 			}
 		}
 	}
@@ -189,12 +186,12 @@ class Admin_table extends MY_Controller {
 		$where_arr=array('shop_id'=>$_SESSION['admin_user']['shop_id']);
 		
 		$sort_value=$_GET['sort_value'];
-		$sort_id_1=$_GET['tab_id_1'];
-		$sort_id_2=$_GET['tab_id_2'];
+		$sort_id_1=$_GET['sort_id_1'];
+		$sort_id_2=$_GET['sort_id_2'];
 		$tab_sort_id="type_id";
 		$this->util_model->sort_do_1($tab_sort_id,$sort_value,$sort_id_1,$sort_id_2,$tab_name,$tab_asc,$asc_type,$where_arr,$upd_arr,$sort_value_1,$sort_value_2);
 		//$this->util_model->sort_do($tab_name,$tab_asc,$asc_type,$where_arr,$upd_arr,$sort_value_1,$sort_value_2);
-		$this->table_type_list();
+		$this->table_list();
 	}
 	//餐桌排序
 	public function table_sort(){
@@ -216,9 +213,10 @@ class Admin_table extends MY_Controller {
 		$where_arr=array('type_id'=>$type_id);
 		//$this->util_model->sort_do($tab_name,$tab_asc,$asc_type,$where_arr,$upd_arr,$sort_value_1,$sort_value_2);
 		$this->util_model->sort_do_1($tab_sort_id,$sort_value,$sort_id_1,$sort_id_2,$tab_name,$tab_asc,$asc_type,$where_arr,$upd_arr,$sort_value_1,$sort_value_2);
-		$tab_state="";
+		/*$tab_state="";
 		$data=$this->system_table_model->get_table_list($type_id,$tab_state);
-		$this->load->view('base/table/list',$data);
+		$this->load->view('base/table/list',$data);*/
+		$this->table_list();
 	}
 	
 }

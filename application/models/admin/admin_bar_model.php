@@ -71,7 +71,7 @@ class Admin_bar_model extends MY_Model {
 				if($tab_state==2){
 					$tab_id=$row_1['tab_id'];
 					//待查询订单信息
-					$str="select order_id,order_type,father_id,order_no,waiter_id,order_person,insert_time from shop_order where table_id={$tab_id} and order_state=1";
+					$str="select order_id,order_type,father_id,order_no,waiter_id,order_person,insert_time from shop_order where table_id={$tab_id} and order_state=1 order by order_time desc";
 					$order_one_list=$this->select_all($str);
 					for ($z=0;$z<count($order_one_list);$z++){
 						$one=$order_one_list[$z];
@@ -79,7 +79,7 @@ class Admin_bar_model extends MY_Model {
 
 						$str="select w.id,w.log_type,w.order_id,w.log_desc,w.i_time,w.waiter_id,s.waiter_no,
         				s.waiter_name from waiter_log w left join shop_waiter s on w.waiter_id = s.waiter_id
-        				where w.shop_id={$_SESSION['admin_user']['shop_id']} and w.order_id=$order_id and w.log_type=0";
+        				where w.shop_id={$_SESSION['admin_user']['shop_id']} and w.order_id=$order_id and w.log_type=0 order by i_time desc";
 						$order_one_list[$z]['waiter_logs'] = $this->select_all($str);
 
 						$str="select log_id,log_name,log_price,log_count,log_money from shop_order_log where order_id=$order_id";

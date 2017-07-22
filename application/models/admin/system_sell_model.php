@@ -41,7 +41,7 @@ class System_sell_model extends MY_Model {
 			$waiter_logs = array();
 			$str="select w.id,w.log_type,w.order_id,w.log_desc,w.i_time,w.waiter_id,s.waiter_no,
         				s.waiter_name from waiter_log w left join shop_waiter s on w.waiter_id = s.waiter_id
-        				where w.shop_id={$_SESSION['admin_user']['shop_id']} and w.order_id=$order_id and w.log_type=0";
+        				where w.shop_id={$_SESSION['admin_user']['shop_id']} and w.order_id=$order_id and w.log_type=0 order by i_time desc";
 			$waiter_logs = $this->select_all($str);
 			//查询主菜单下的菜品数据
 			//查询该订单的菜品数据
@@ -60,7 +60,7 @@ class System_sell_model extends MY_Model {
 
 				$str="select w.id,w.log_type,w.order_id,w.log_desc,w.i_time,w.waiter_id,s.waiter_no,
         				s.waiter_name from waiter_log w left join shop_waiter s on w.waiter_id = s.waiter_id
-        				where w.shop_id={$_SESSION['admin_user']['shop_id']} and w.order_id=$order_id and w.log_type=0";
+        				where w.shop_id={$_SESSION['admin_user']['shop_id']} and w.order_id=$order_id and w.log_type=0 order by i_time desc";
 				$waiter_logs = array_merge_recursive($waiter_logs,$this->select_all($str));
 			}
 			$list[$i]['sub_order']=$sub_order;

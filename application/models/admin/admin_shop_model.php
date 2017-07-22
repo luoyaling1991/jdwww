@@ -224,6 +224,7 @@ class Admin_shop_model extends MY_Model {
 		if (!is_null($waiter_jurisdiction)) {
 			$waiter_jurisdiction_arr = explode(",", $waiter_jurisdiction);
 			$result['waiter_jurisdiction'] = $waiter_jurisdiction_arr;
+			$result['waiter_jurisdiction_json'] = $this->JSON($waiter_jurisdiction_arr);
 		}
 		if(empty($result)){
 			return "-1";//没有找到账户

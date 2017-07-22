@@ -85,7 +85,6 @@
                 var index = $.inArray(show_id,show_ids);
                 show_ids.splice(index,1);
             }
-            console.log(show_ids);
         });
     }
     function show_recommend_list() {

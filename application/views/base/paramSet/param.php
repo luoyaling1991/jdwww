@@ -155,8 +155,6 @@
             return;
         }
 
-        console.log(name5 + " | " + print_type + " | " + call_num + " | " + call_address + " | " + other)
-
         if(!shopNameIsLegal){
             return;
         }

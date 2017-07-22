@@ -177,6 +177,10 @@
         })
     }
     function batch_del () {
+        if (userArr.length <= 0){
+            alert("请选择要进行删除的员工");
+            return false;
+        }
         if(!confirm("确定要执行批量删除吗？")){
             return false;
         }

@@ -11,18 +11,36 @@ class Admin_sell extends MY_Controller {
 			session_start();
 		}
 	}
+
 	//打开打印机设置页面
-	public function set_show(){
-		$data=$this->admin_print_model->get_info();
-		$this->load->view('base/paramSet/param',$data);
+	public function set_show()
+	{
+		$data = $this->admin_print_model->get_info();
+		$this->load->view('base/paramSet/param', $data);
 	}
 	//修改配置
-	public function set_do(){
-	$bl=$this->admin_print_model->upd_info();
-		if($bl){
+	public function set_do()
+	{
+		$bl = $this->admin_print_model->upd_info();
+		if ($bl) {
 			$this->set_show();
-		}else{
+		} else {
 			echo "<script>alert('操作执行失败，请重试!');history.go(-1);</script>";
+		}
+	}
+	//修改打印配置配置
+	public function updataPrintParam()
+	{
+		$name5 = $this->input->post('name5');
+		if (mb_strlen($name5) > 5) {
+			echo '{"state":0,"msg":"商家名称在5个字以内!"}';
+			return;
+		}
+		$bl = $this->admin_print_model->upd_info();
+		if ($bl) {
+			echo '{"state":1,"msg":"修改成功！"}';
+		} else {
+			echo '{"state":0,"msg":"操作失败,请重试!"}';
 		}
 	}
 	//营业概况
